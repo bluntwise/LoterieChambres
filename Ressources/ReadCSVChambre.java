@@ -58,11 +58,13 @@ public class ReadCSVChambre {
 
     public static void main(String[] args) {
         String path;
-        if (args.length == 0){ 
+        boolean c = false;
+        if (args.length == 0 && c){ 
             System.out.println("This main needs a path!");
         }
         else {
-            path = args[0]; // getting the argument
+            // path = args[0]; // getting the argument
+            path = "Ressources/liste_chambres.csv";
             File csvFile = new File(path); // to read the CSV file
             try(BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String line;

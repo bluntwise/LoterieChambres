@@ -9,7 +9,7 @@ public class ReadCSVEtudiant {
     private String surname;
     private int age;
     private String gender;
-    private int INE;
+    private String INE;
     private int promo;
     private int[] notes;
     private String contrat;
@@ -23,7 +23,7 @@ public class ReadCSVEtudiant {
         this.age = Integer.parseInt(line_splited[3]); // had to convert to int
         this.gender = line_splited[4];
         // 'if' one line statements, just to verify if the value is "null"
-        this.INE = ((line_splited[5].equals("null")) ? 0 : Integer.parseInt(line_splited[5])); 
+        this.INE = ((line_splited[5].equals("null")) ? "null" : line_splited[5]); 
         this.promo = ((line_splited[6].equals("null")) ? 0 : Integer.parseInt(line_splited[6]));
         this.notes = ((line_splited[7].equals("null")) ? new int[0] : parse_list_int(line_splited[7]));
         this.contrat = ((line_splited[8].equals("null")) ? "null" : line_splited[8]);
@@ -56,11 +56,13 @@ public class ReadCSVEtudiant {
 
     public static void main(String[] args) {
         String path;
-        if (args.length == 0){ 
+        boolean c = false;
+        if (args.length == 0 && c){ 
             System.out.println("This main needs a path!");
         }
         else {
-            path = args[0]; // getting the argument
+            //path = args[0]; // getting the argument
+            path = "Ressources/liste_etudiants.csv";
             File csvFile = new File(path); // to read the CSV file
             try(BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
                 String line;
