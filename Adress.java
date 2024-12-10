@@ -26,7 +26,6 @@ public class Adress {
         return this.street + " " + this.city + " " + Integer.toString(this.city_code);
     }
 
-
     public static void main(String[] args) {
         
         Adress a = new Adress("Lannion", 22300, "46 Avenue du Général de Gaulle");
