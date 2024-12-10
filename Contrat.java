@@ -30,6 +30,5 @@ public class Contrat {
 
         Contrat c = new Contrat("8453146484", workingHours);
         System.out.println(c);
-
     }
 }
