@@ -20,6 +20,17 @@ public class Chambre {
         this.scores = scores;
     }
 
+    public Chambre(String id, String name, Residence residence float surface, int creation_date, int latest_renovation_date, int nb_locations, Note scores){
+        this.id = id;
+        this.name = name;
+        this.residence = residence;
+        this.surface = surface;
+        this.creation_date = creation_date;
+        this.latest_renovation_date = latest_renovation_date;
+        this.nb_locations = nb_locations;
+        this.scores = scores;
+    }
+
     public String getId(){
         return this.id;
     }

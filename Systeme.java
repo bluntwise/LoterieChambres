@@ -8,9 +8,11 @@ public class Systeme {
 
     
     private ArrayList<Chambre> allChambres;
+    private ArrayList<Residence> allResidences;
 
     public Systeme(){
         this.allChambres = new ArrayList<>();
+        this.allResidences = new ArrayList<>();
     }
 
     public void initChambres(String path){
@@ -20,13 +22,47 @@ public class Systeme {
             ReadCSVChambre obj_line;
             reader.readLine(); // Dropping first line
             while((line = reader.readLine()) != null) { // reader.readLine() -> to get the line and 
-                // System.out.println(line);
+ 
                 obj_line = new ReadCSVChambre(line.split(";")); // spliting here but it was a choice
-                obj_line.affiche(); // do terminal print
+                
+                Adress adress =  new Adress(obj_line.getCity(),obj_line.getCity_code(), obj_line.getAddress());
+
+                Residence residence = null;
+                if (!findResidenceByAdress(adress).equals(null)){
+                    residence = findResidenceByAdress(adress);
+                }else{
+                    residence = new Residence(adress);
+                }
+                
+                if (!allResidences.contains(residence)){
+                    allResidences.add(residence);
+                }
+                Note scores = new Note(obj_line.getScores());
+                Chambre chambre = new Chambre(obj_line.getId(), obj_line.getName(),residence , obj_line.getSurface(), obj_line.getCreation_date(), obj_line.getLatest_renovation_date(), obj_line.getNb_locations(), scores);
+                
+                residence.addChambre(chambre);
+                allChambres.add(chambre);
             }
         } catch (IOException e) {
             System.err.println(e);
             System.err.println("An issue occured...");
         }
+    }
+
+
+    public Residence findResidenceByAdress(Adress adress){
+        Residence r = null;
+        for (Residence residence : allResidences) {
+            if (residence.getAdress().equals(adress)){
+                r = residence;
+            }
+        }
+
+        return r;
+    }
+
+    public static void main(String[] args) {
+        Systeme system = new Systeme();
+        system.initChambres("./Ressources/liste_chambres.csv");
     }
 }

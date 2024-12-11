@@ -14,6 +14,9 @@ public class Residence {
         return this.adress;
     }
 
+    public void addChambre(Chambre chambre){
+        chambres.add(chambre);
+    }
     public ArrayList<Chambre> getChambres(){
         return this.chambres;
     }
