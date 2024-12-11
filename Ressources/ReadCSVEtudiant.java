@@ -54,6 +54,47 @@ public class ReadCSVEtudiant {
         System.out.println(this.working_hours);
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getINE() {
+        return INE;
+    }
+
+    public int getPromo() {
+        return promo;
+    }
+
+    public int[] getNotes() {
+        return notes;
+    }
+
+    public String getContrat() {
+        return contrat;
+    }
+
+    public String[] getWorking_hours() {
+        return working_hours;
+    }
+
+
     public static void main(String[] args) {
         String path;
         boolean c = false;

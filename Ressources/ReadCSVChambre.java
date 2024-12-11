@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ReadCSVChambre {
     private String id;
@@ -54,6 +55,50 @@ public class ReadCSVChambre {
         System.out.println(this.latest_renovation_date);
         System.out.println(this.nb_locations);
         System.out.println(this.scores);
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getResidence() {
+        return residence;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public int getCity_code() {
+        return city_code;
+    }
+
+    public float getSurface() {
+        return surface;
+    }
+    public int getCreation_date() {
+        return creation_date;
+    }
+
+    public int getLatest_renovation_date() {
+        return latest_renovation_date;
+    }
+
+    public int getNb_locations() {
+        return nb_locations;
+    }
+
+    public int[] getScores() {
+        return scores;
     }
 
     public static void main(String[] args) {
