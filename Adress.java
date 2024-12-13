@@ -10,11 +10,17 @@ public class Adress {
         this.street = street;
     }
 
+    
+    public boolean equals(Adress adress){
+        return this.getCity().equals(adress.getCity()) && this.getCityCode() == adress.getCityCode()  && this.getStreet().equals(adress.getStreet());
+    }
+
+    /* Getters */
+    
     public String getCity(){
         return this.city;
     }
-
-    public int city_code(){
+    public int getCityCode(){
         return this.city_code;
     }
 

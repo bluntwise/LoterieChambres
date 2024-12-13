@@ -9,10 +9,12 @@ public class Systeme {
     
     private ArrayList<Chambre> allChambres;
     private ArrayList<Residence> allResidences;
+    private ArrayList<Person> allPersons;
 
     public Systeme(){
         this.allChambres = new ArrayList<>();
         this.allResidences = new ArrayList<>();
+        this.allPersons = new ArrayList<>();
     }
 
 
@@ -48,8 +50,7 @@ public class Systeme {
             System.err.println("An issue occured...");
         }
     }
-
-
+    
     public Residence findResidenceByAdress(Adress adress){
         Residence r = null;
         for (Residence residence : allResidences) {
@@ -60,6 +61,39 @@ public class Systeme {
 
         return r;
     }
+
+    public void initPerson(String path){
+
+        File csvFile = new File(path); // to read the CSV file
+        try(BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
+            String line;
+            ReadCSVEtudiant obj_line;
+            reader.readLine(); // Dropping first line
+            while((line = reader.readLine()) != null) { // reader.readLine() -> to get the line and 
+                // System.out.println(line);
+                obj_line = new ReadCSVEtudiant(line.split(";")); // spliting here but it was a choice
+
+                Person person;
+                if (obj_line.getContrat() != null){
+                    Contrat contrat = new Contrat(obj_line.getContrat(), obj_line.getWorking_hours());
+                    if (obj_line.getINE() == null){
+                        person = new Person(obj_line.getName(), obj_line.getSurname(), obj_line.getGender(), obj_line.getAge(), contrat);
+                    }else{
+                        person = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), obj_line.getNotes(),contrat);
+                    }
+                }else{
+                    person = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), obj_line.getNotes());
+                }
+                allPersons.add(person);
+
+            }
+        } catch (IOException e) {
+            System.err.println(e);
+            System.err.println("An issue occured for Person extract");
+        }
+    }
+
+
 
 
     /* Getters */
@@ -76,8 +110,5 @@ public class Systeme {
         Systeme system = new Systeme();
         system.initChambres("./Ressources/liste_chambres.csv");
 
-        for (Residence residence : system.getAllResidences()) {
-            System.out.println(residence.displayChambres());
-        }System.out.println(system.getAllResidences());
     }
 }
