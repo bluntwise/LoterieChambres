@@ -28,7 +28,7 @@ public class Systeme {
                 Adress adress =  new Adress(obj_line.getCity(),obj_line.getCity_code(), obj_line.getAddress());
 
                 Residence residence = null;
-                if (!findResidenceByAdress(adress).equals(null)){
+                if (!(findResidenceByAdress(adress)==null)){
                     residence = findResidenceByAdress(adress);
                 }else{
                     residence = new Residence(adress);
