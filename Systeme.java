@@ -106,9 +106,17 @@ public class Systeme {
         return allResidences;
     }
 
+    public ArrayList<Person> getAllPerson(){
+        return allPersons;
+    }
+
     public static void main(String[] args) {
         Systeme system = new Systeme();
         system.initChambres("./Ressources/liste_chambres.csv");
+        system.initPerson("./Ressources/liste_etudiants.csv");
+        for (Person person : system.getAllPerson()) {
+            System.out.println(person);
+        }
 
     }
 }

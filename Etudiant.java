@@ -29,7 +29,7 @@ public class Etudiant extends Person{
         return this.INE;
     }
 
-    public String getPromo(){
+    public int getPromo(){
         return this.promo;
     }
 
