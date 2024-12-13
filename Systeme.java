@@ -15,6 +15,7 @@ public class Systeme {
         this.allResidences = new ArrayList<>();
     }
 
+
     public void initChambres(String path){
         File csvFile = new File(path); // to read the CSV file
         try(BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
@@ -32,12 +33,11 @@ public class Systeme {
                     residence = findResidenceByAdress(adress);
                 }else{
                     residence = new Residence(adress);
-                }
-                
-                if (!allResidences.contains(residence)){
                     allResidences.add(residence);
                 }
+
                 Note scores = new Note(obj_line.getScores());
+
                 Chambre chambre = new Chambre(obj_line.getId(), obj_line.getName(),residence , obj_line.getSurface(), obj_line.getCreation_date(), obj_line.getLatest_renovation_date(), obj_line.getNb_locations(), scores);
                 
                 residence.addChambre(chambre);
@@ -61,8 +61,23 @@ public class Systeme {
         return r;
     }
 
+
+    /* Getters */
+
+    public ArrayList<Chambre> getAllChambres(){
+        return allChambres;
+    }
+
+    public ArrayList<Residence> getAllResidences(){
+        return allResidences;
+    }
+
     public static void main(String[] args) {
         Systeme system = new Systeme();
         system.initChambres("./Ressources/liste_chambres.csv");
+
+        for (Residence residence : system.getAllResidences()) {
+            System.out.println(residence.displayChambres());
+        }System.out.println(system.getAllResidences());
     }
 }

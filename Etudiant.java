@@ -29,6 +29,10 @@ public class Etudiant extends Person{
         return this.notes;
     }
 
+    public String toString(){
+        String s = " ";
+        return super.toString() + s + id + s + INE + s + promo + s + notes; 
+    }
 
     public static void main(String[] args) {
         // Etudiant e = new Etudiant("35qg65cq48", null, null, null, null, null, null, 0)

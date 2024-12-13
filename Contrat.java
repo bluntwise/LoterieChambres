@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Contrat {
 
     private String contrat;
@@ -17,12 +19,7 @@ public class Contrat {
     }
 
     public String toString(){
-        String r = contrat + " | horaires :";
-        for (int i = 0; i < workinghours.length; i++) {
-           r += " " + workinghours[i];
-        }
-
-        return r;
+        return contrat + " " + Arrays.toString(workinghours);
     }
 
     public static void main(String[] args) {

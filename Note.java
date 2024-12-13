@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class Note {
     private int[] notes;
@@ -12,6 +13,10 @@ public class Note {
             s += notes[i];
         }
         return s/notes.length;
+    }
+
+    public String toString(){
+        return Arrays.toString(this.notes);
     }
 
     public static void main(String[] args) {

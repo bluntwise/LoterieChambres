@@ -42,5 +42,10 @@ public class Person {
         return this.contrat;
     }
 
+    public String toString(){
+        String s = " ";
+        return name + s + surname + s + gender + s + age + s + contrat;
+    }
+
 
 }
