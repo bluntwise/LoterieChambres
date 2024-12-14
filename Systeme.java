@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Systeme {
 
@@ -74,15 +75,17 @@ public class Systeme {
                 obj_line = new ReadCSVEtudiant(line.split(";")); // spliting here but it was a choice
 
                 Person person;
+
+                Note scores = new Note(obj_line.getNotes());
                 if (obj_line.getContrat() != null){
                     Contrat contrat = new Contrat(obj_line.getContrat(), obj_line.getWorking_hours());
                     if (obj_line.getINE() == null){
                         person = new Person(obj_line.getName(), obj_line.getSurname(), obj_line.getGender(), obj_line.getAge(), contrat);
                     }else{
-                        person = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), obj_line.getNotes(),contrat);
+                        person = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores,contrat);
                     }
                 }else{
-                    person = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), obj_line.getNotes());
+                    person = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores);
                 }
                 allPersons.add(person);
 
@@ -95,7 +98,11 @@ public class Systeme {
 
     
     public void rankingChambres(){
-
+        ArrayList<Chambre> l = getAllChambres();
+        l.sort(Comparator.comparing(Chambre::getAverage));
+        for (Chambre chambre : l) {
+            System.out.println(chambre);
+        }
     }
 
 
@@ -118,9 +125,6 @@ public class Systeme {
         Systeme system = new Systeme();
         system.initChambres("./Ressources/liste_chambres.csv");
         system.initPerson("./Ressources/liste_etudiants.csv");
-        for (Chambre person : system.getAllChambres()) {
-            System.out.println(person);
-        }
-
+        system.rankingChambres();
     }
 }

@@ -47,5 +47,9 @@ public class Person {
         return name + s + surname + s + gender + s + age + s + contrat;
     }
 
+    public float getAverage(){
+        return 0;
+    }
+
 
 }

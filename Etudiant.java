@@ -3,9 +3,9 @@ public class Etudiant extends Person{
     private String id;
     private String INE;
     private int promo;
-    private int[] notes;
+    private Note notes;
 
-    public Etudiant(String id, String name, String surname, int age, String gender, String INE, int promo, int[] notes){
+    public Etudiant(String id, String name, String surname, int age, String gender, String INE, int promo, Note notes){
         super(name, surname, gender, age);
         this.id = id;
         this.INE = INE;
@@ -13,7 +13,7 @@ public class Etudiant extends Person{
         this.notes = notes;
     }
 
-    public Etudiant(String id, String name, String surname, int age, String gender, String INE, int promo, int[] notes, Contrat contrat){
+    public Etudiant(String id, String name, String surname, int age, String gender, String INE, int promo, Note notes, Contrat contrat){
         super(name, surname, gender, age, contrat);
         this.id = id;
         this.INE = INE;
@@ -33,7 +33,7 @@ public class Etudiant extends Person{
         return this.promo;
     }
 
-    public int[] getNotes(){
+    public Note getNotes(){
         return this.notes;
     }
 
@@ -42,6 +42,7 @@ public class Etudiant extends Person{
         return super.toString() + s + id + s + INE + s + promo + s + notes + s + getAverage(); 
     }
 
+    @Override
     public float getAverage(){
         return notes.getAverage();
     }
