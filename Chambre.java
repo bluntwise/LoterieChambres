@@ -21,8 +21,12 @@ public class Chambre {
 
     public String toString(){
         String s = " ";
-        return getId() + s + getName() + s + residence.toString() + s + surface + s + creation_date + s + latest_renovation_date + s + nb_locations + s + scores.toString();  
+        return getId() + s + getName() + s + residence.toString() + s + surface + s + creation_date + s + latest_renovation_date + s + nb_locations + s + scores.toString() + s + getAverage();  
 
+    }
+
+    public float getAverage(){
+        return scores.getAverage();
     }
     
     public String getId(){

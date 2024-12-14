@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.stream.IntStream;
+import java.lang.*;
 
 public class Note {
     private int[] notes;
@@ -21,5 +23,9 @@ public class Note {
 
     public static void main(String[] args) {
 
+    }
+
+    public float getAverage(){
+        return IntStream.of(notes).sum()/notes.length;
     }
 }

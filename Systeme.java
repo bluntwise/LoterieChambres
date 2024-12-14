@@ -93,6 +93,10 @@ public class Systeme {
         }
     }
 
+    
+    public void rankingChambres(){
+
+    }
 
 
 
@@ -114,7 +118,7 @@ public class Systeme {
         Systeme system = new Systeme();
         system.initChambres("./Ressources/liste_chambres.csv");
         system.initPerson("./Ressources/liste_etudiants.csv");
-        for (Person person : system.getAllPerson()) {
+        for (Chambre person : system.getAllChambres()) {
             System.out.println(person);
         }
 

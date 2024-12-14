@@ -39,7 +39,11 @@ public class Etudiant extends Person{
 
     public String toString(){
         String s = " ";
-        return super.toString() + s + id + s + INE + s + promo + s + notes; 
+        return super.toString() + s + id + s + INE + s + promo + s + notes + s + getAverage(); 
+    }
+
+    public float getAverage(){
+        return notes.getAverage();
     }
 
     public static void main(String[] args) {
