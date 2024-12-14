@@ -98,10 +98,17 @@ public class Systeme {
 
     
     public void rankingChambres(){
-        ArrayList<Chambre> l = getAllChambres();
-        l.sort(Comparator.comparing(Chambre::getAverage));
-        for (Chambre chambre : l) {
+        
+        getAllChambres().sort(Comparator.comparing(Chambre::getAverage));
+        for (Chambre chambre : getAllChambres()) {
             System.out.println(chambre);
+        }
+    }
+
+    public void rankingPersons(){
+        getAllPerson().sort(Comparator.comparing(Person::getAverage));
+        for (Person person : getAllPerson()) {
+            System.out.println(person);
         }
     }
 
@@ -127,6 +134,6 @@ public class Systeme {
         Systeme system = new Systeme();
         system.initChambres("./Ressources/liste_chambres.csv");
         system.initPersons("./Ressources/liste_etudiants.csv");
-        system.rankingChambres();
+        system.rankingPersons();
     }
 }

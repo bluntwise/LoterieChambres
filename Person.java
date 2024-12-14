@@ -48,7 +48,7 @@ public class Person {
     }
 
     public float getAverage(){
-        return 0;
+        return (float) 0.0;
     }
 
 
