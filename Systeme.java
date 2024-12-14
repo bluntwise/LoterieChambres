@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class Systeme {
@@ -11,6 +12,7 @@ public class Systeme {
     private ArrayList<Chambre> allChambres;
     private ArrayList<Residence> allResidences;
     private ArrayList<Person> allPersons;
+    
 
     public Systeme(){
         this.allChambres = new ArrayList<>();
@@ -77,16 +79,20 @@ public class Systeme {
                 Person person;
 
                 Note scores = new Note(obj_line.getNotes());
-                if (obj_line.getContrat() != null){
+                if (obj_line.getContrat() != "null"){
                     Contrat contrat = new Contrat(obj_line.getContrat(), obj_line.getWorking_hours());
-                    if (obj_line.getINE() == null){
+                    
+                    if (obj_line.getINE() == "null"){
                         person = new Person(obj_line.getName(), obj_line.getSurname(), obj_line.getGender(), obj_line.getAge(), contrat);
+
                     }else{
                         person = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores,contrat);
+                        
                     }
                 }else{
                     person = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores);
                 }
+                // System.out.println(person.getAverage() + " | " + test);
                 allPersons.add(person);
 
             }
@@ -106,15 +112,15 @@ public class Systeme {
     }
 
     public void rankingPersons(){
-        getAllPerson().sort(Comparator.comparing(Person::getAverage));
+        getAllPerson().sort(Comparator.comparing(Person::getPoints));
         for (Person person : getAllPerson()) {
             System.out.println(person);
         }
     }
 
-    
+    public void associationChambresPersons(){
 
-
+    }
 
     /* Getters */
 

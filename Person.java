@@ -48,8 +48,15 @@ public class Person {
     }
 
     public float getAverage(){
-        return (float) 0.0;
+        return 0.0f;
     }
 
+    public float getPoints(){
+        if (getContrat() != null){
+            return getContrat().getTotalHours();
+        }else{
+            return 0f;
+        }
+    }
 
 }

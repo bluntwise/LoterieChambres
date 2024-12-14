@@ -39,12 +39,20 @@ public class Etudiant extends Person{
 
     public String toString(){
         String s = " ";
-        return super.toString() + s + id + s + INE + s + promo + s + notes + s + getAverage(); 
+        return super.toString() + s + id + s + INE + s + promo + s + notes + s + getPoints(); 
     }
 
     @Override
     public float getAverage(){
         return notes.getAverage();
+    }
+
+    public float getPoints(){
+        float points = notes.getAverage()  + (getPromo()-2027)*(-1);
+        if (getContrat() == null){
+            return points;
+        }
+        return points + getContrat().getTotalHours();
     }
 
     public static void main(String[] args) {
