@@ -63,7 +63,7 @@ public class Systeme {
         return r;
     }
 
-    public void initPerson(String path){
+    public void initPersons(String path){
 
         File csvFile = new File(path); // to read the CSV file
         try(BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
@@ -105,6 +105,8 @@ public class Systeme {
         }
     }
 
+    
+
 
 
     /* Getters */
@@ -124,7 +126,7 @@ public class Systeme {
     public static void main(String[] args) {
         Systeme system = new Systeme();
         system.initChambres("./Ressources/liste_chambres.csv");
-        system.initPerson("./Ressources/liste_etudiants.csv");
+        system.initPersons("./Ressources/liste_etudiants.csv");
         system.rankingChambres();
     }
 }
