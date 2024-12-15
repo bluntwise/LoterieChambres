@@ -1,17 +1,20 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Residence {
 
     private Adress adress;
-    private Map<Chambre,Boolean> chambres;
+    private TreeMap<Chambre,Boolean> chambres;
     private ArrayList<Person> personnes;
     private Map<Person,Chambre> associations;
 
     public Residence(Adress adress){
         this.adress = adress;
-        this.chambres = new LinkedHashMap<>();
+        Comparator<Chambre> comparator = Comparator.comparing(Chambre::getAverage);
+        chambres = new TreeMap<>(comparator);
         this.personnes = new ArrayList<>();
         this.associations = new LinkedHashMap<>();
     }
@@ -22,14 +25,11 @@ public class Residence {
         return adress.toString() + " " + chambres.size();
     }
 
-    public Adress getAdress(){
-        return this.adress;
-    }
-
+    
     public void addChambre(Chambre chambre){
         chambres.put(chambre,false);
     }
-
+    
     public String displayChambres(){
         String r = "";
         Chambre chambre;
@@ -42,5 +42,9 @@ public class Residence {
     }
     public Map<Chambre,Boolean> getChambres(){
         return this.chambres;
+    }
+
+    public Adress getAdress(){
+        return this.adress;
     }
 }

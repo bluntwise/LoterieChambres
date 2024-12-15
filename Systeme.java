@@ -7,20 +7,22 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 
 public class Systeme {
 
     
-    private Map<Chambre,Boolean> allChambres;
+    private TreeMap<Chambre,Boolean> allChambres;
     private ArrayList<Residence> allResidences;
     private ArrayList<Person> allPersons;
     private Map<Person,Chambre> associations;
     
 
     public Systeme(){
-        this.allChambres = new LinkedHashMap<>();
+        Comparator<Chambre> comparator = Comparator.comparing(Chambre::getAverage);
+        this.allChambres = new TreeMap<>(comparator);
         this.allResidences = new ArrayList<>();
         this.allPersons = new ArrayList<>();
         this.associations = new LinkedHashMap<>();
@@ -52,7 +54,6 @@ public class Systeme {
                 Chambre chambre = new Chambre(obj_line.getId(), obj_line.getName(),residence , obj_line.getSurface(), obj_line.getCreation_date(), obj_line.getLatest_renovation_date(), obj_line.getNb_locations(), scores);
                 
                 residence.addChambre(chambre);
-                allChambres.put(chambre,false);
             }
         } catch (IOException e) {
             System.err.println(e);
@@ -75,6 +76,7 @@ public class Systeme {
 
         File csvFile = new File(path); // to read the CSV file
         try(BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
+            
             String line;
             ReadCSVEtudiant obj_line;
             reader.readLine(); // Dropping first line
@@ -111,6 +113,11 @@ public class Systeme {
     
     public void rankingChambres(){
         
+        for (Residence residence: getAllResidences()) {
+            allChambres.putAll(residence.getChambres());
+        }
+
+
         allChambres = allChambres.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByKey(Comparator.comparing(Chambre::getAverage).reversed()))
