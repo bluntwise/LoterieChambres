@@ -35,9 +35,6 @@ public class GroupResidence {
         rankingChambres();
         rankingPersonnes();
         associationChambresPersonnes();
-
-
-
     }
 
     public void initChambres(String path){
@@ -227,6 +224,18 @@ public class GroupResidence {
         return r;
     }
 
+    public String getPersonnesWithOut(){
+        String r = "Personnes sans logement : \n";
+
+        for (Map.Entry<Personne, Chambre> entry : getAllAssociations().entrySet()) {
+            if (entry.getValue() == null){
+                r += entry.getKey().getName() + " " + entry.getKey().getSurname()  + " " + entry.getKey().getPoints() + "\n";
+            }
+        }
+        
+        return r;
+    }
+
     /* Getters */
 
     public Residence getResidenceByChambre(Chambre chambre){
@@ -261,7 +270,7 @@ public class GroupResidence {
         String r = "";
         for (Residence residence : getAllResidences()) {
             r += residence.toString();
-        }return r;
+        }return r + "\n" + getPersonnesWithOut();
     }
    
 
@@ -269,8 +278,8 @@ public class GroupResidence {
         GroupResidence system = new GroupResidence();
         system.actualize();
 
-        System.out.println(system);
-        system.deletePersonne(personne);
+        // System.out.println(system);
+        // system.deletePersonne(personne);
         System.out.println(system);
 
 
