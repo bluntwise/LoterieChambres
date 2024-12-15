@@ -3,25 +3,24 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import javax.print.DocFlavor.CHAR_ARRAY;
 
 public class Systeme {
 
     
-    private ArrayList<Chambre> allChambres;
+    private Map<Chambre,Boolean> allChambres;
     private ArrayList<Residence> allResidences;
     private ArrayList<Person> allPersons;
     private Map<Person,Chambre> associations;
     
 
     public Systeme(){
-        this.allChambres = new ArrayList<>();
+        this.allChambres = new LinkedHashMap<>();
         this.allResidences = new ArrayList<>();
         this.allPersons = new ArrayList<>();
         this.associations = new LinkedHashMap<>();
@@ -53,7 +52,7 @@ public class Systeme {
                 Chambre chambre = new Chambre(obj_line.getId(), obj_line.getName(),residence , obj_line.getSurface(), obj_line.getCreation_date(), obj_line.getLatest_renovation_date(), obj_line.getNb_locations(), scores);
                 
                 residence.addChambre(chambre);
-                allChambres.add(chambre);
+                allChambres.put(chambre,false);
             }
         } catch (IOException e) {
             System.err.println(e);
@@ -112,10 +111,15 @@ public class Systeme {
     
     public void rankingChambres(){
         
-        getAllChambres().sort(Comparator.comparing(Chambre::getAverage).reversed());
-        // for (Chambre chambre : getAllChambres()) {
-        //     System.out.println(chambre);
-        // }
+        allChambres = allChambres.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey(Comparator.comparing(Chambre::getAverage).reversed()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,  // Clé
+                        Map.Entry::getValue,  // Valeur
+                        (e1, e2) -> e1,  // En cas de doublon, garder la première entrée
+                        LinkedHashMap::new  // Utilisation de LinkedHashMap pour garder l'ordre trié
+                ));
     }
 
     public void rankingPersons(){
@@ -126,16 +130,27 @@ public class Systeme {
     }
 
     public void associationChambresPersons(){
-        Chambre chambre;
+        Chambre chambre = null;
         Person person;
-        for (int i = 0; i < this.getAllPerson().size(); i++) {
-            if (i >= this.getAllChambres().size()){
+        
+        Iterator<Chambre> chambIterator = this.getAllChambres().keySet().iterator();
+        int index = 0;
+
+        for (index = 0; index < this.getAllPerson().size(); index++){
+            if (chambIterator == null){
                 chambre = null;
             }else{
-                chambre = this.getAllChambres().get(i);
+                try{
+                    chambre = chambIterator.next();
+                }catch(Exception exception){
+                    chambre = null;
+                }
             }
-            person = this.getAllPerson().get(i);                
-            associations.put(person,chambre);
+
+            person = this.getAllPerson().get(index);
+
+            associations.put(person, chambre);
+
         }
     }
 
@@ -166,9 +181,10 @@ public class Systeme {
         return result;
     }
 
+
     /* Getters */
 
-    public ArrayList<Chambre> getAllChambres(){
+    public Map<Chambre,Boolean> getAllChambres(){
         return allChambres;
     }
 
