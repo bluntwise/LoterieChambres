@@ -64,6 +64,11 @@ public class Residence extends GroupResidence{
         getAllChambres().put(chambre, false);
         getAllPersonne().remove(personne);
     }
+
+    public void deleteChambre(Personne personne, Chambre chambre){
+        getAllAssociations().remove(personne);
+        getAllChambres().remove(chambre);
+    }
     
     public void addChambre(Chambre chambre){
         getAllChambres().put(chambre,false);

@@ -209,9 +209,32 @@ public class GroupResidence {
         getAllChambres().put(chambre, false);
         getAllPersonne().remove(personne);
 
-
     }
 
+
+
+    public void deleteChambre(Chambre chambre){
+        Personne personne = null;
+        for (Map.Entry<Personne, Chambre> entry : associations.entrySet()) {
+            if (entry.getValue().equals(chambre)) {
+                personne = entry.getKey();  // Retourne la personne associée
+            }
+        }
+
+        Residence residence = getResidenceByChambre(chambre);
+        residence.deleteChambre(personne, chambre);
+        getAllAssociations().remove(personne);
+        getAllChambres().remove(chambre);
+    }
+
+
+    public String availabilityChambres(){
+        String r = "";
+        for (Residence residence : getAllResidences()) {
+            r += residence.displayChambres();
+        }
+        return r;
+    }
 
     /* Getters */
 
@@ -250,11 +273,14 @@ public class GroupResidence {
         }return r;
     }
 
+   
+
     public static void main(String[] args) {
         GroupResidence system = new GroupResidence();
         system.initGeneral();
-        System.out.println(system.displayAssociationsAll());
-        System.out.println(system);
+        System.out.println(system.getAllResidences().get(0).getAllChambres().size());
+
+
 
 
 
