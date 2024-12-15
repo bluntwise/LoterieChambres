@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Systeme {
@@ -21,7 +22,7 @@ public class Systeme {
         this.allChambres = new ArrayList<>();
         this.allResidences = new ArrayList<>();
         this.allPersons = new ArrayList<>();
-        this.associations = new HashMap<>();
+        this.associations = new LinkedHashMap<>();
     }
 
 
@@ -136,10 +137,12 @@ public class Systeme {
         String r = "";
 
         for (Map.Entry<Chambre, Person> entry : associations.entrySet()) {
-            r += entry.getKey().getName() + " " + entry.getKey().getId() + " : " + entry.getKey().getAverage() + " -> " + entry.getValue().getName() + " : " + entry.getValue().getPoints() + "\n";
-            if (entry.getValue().getPoints() < 0f){
-                System.out.println(entry.getValue());
+            Chambre c = entry.getKey();
+            Person p = entry.getValue();
+            r += c.getName() + " " + c.getId() + " : " + c.getAverage() + " -> " + p.getName() + " : " + p.getPoints() + " " + p.getContrat() + "\n" + p.toString();
+            if (p instanceof Etudiant){
             }
+            
         }
 
         return r;
@@ -166,6 +169,10 @@ public class Systeme {
         system.rankingPersons();
         system.rankingChambres();
         system.associationChambresPersons();
+        // system.displayAssociations();
         System.out.println(system.displayAssociations());
+        // for (Chambre chambre : system.getAllChambres()) {
+        //     System.out.println(chambre.getAverage());
+        // }
     }
 }

@@ -29,7 +29,7 @@ public class Contrat {
                 float start = Float.parseFloat(getWorkinghours()[i].split("-")[0].replace("\"",""));
                 float end = Float.parseFloat(getWorkinghours()[i].split("-")[1].replace("\"",""));
                 
-                total += end - start;
+                total += Math.abs(end - start);
             }
                 
             
