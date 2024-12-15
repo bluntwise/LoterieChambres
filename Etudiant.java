@@ -48,7 +48,7 @@ public class Etudiant extends Person{
     }
 
     public float getPoints(){
-        float points = notes.getAverage()  + (getPromo()-2027)*(-1);
+        float points = notes.getAverage() + (2027 - getPromo());
         if (getContrat() == null){
             return points;
         }

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Systeme {
 
@@ -12,12 +14,14 @@ public class Systeme {
     private ArrayList<Chambre> allChambres;
     private ArrayList<Residence> allResidences;
     private ArrayList<Person> allPersons;
+    private Map<Chambre, Person> associations;
     
 
     public Systeme(){
         this.allChambres = new ArrayList<>();
         this.allResidences = new ArrayList<>();
         this.allPersons = new ArrayList<>();
+        this.associations = new HashMap<>();
     }
 
 
@@ -106,20 +110,39 @@ public class Systeme {
     public void rankingChambres(){
         
         getAllChambres().sort(Comparator.comparing(Chambre::getAverage));
-        for (Chambre chambre : getAllChambres()) {
-            System.out.println(chambre);
-        }
+        // for (Chambre chambre : getAllChambres()) {
+        //     System.out.println(chambre);
+        // }
     }
 
     public void rankingPersons(){
         getAllPerson().sort(Comparator.comparing(Person::getPoints));
-        for (Person person : getAllPerson()) {
-            System.out.println(person);
-        }
+        // for (Person person : getAllPerson()) {
+        //     System.out.println(person);
+        // }
     }
 
     public void associationChambresPersons(){
+        Chambre chambre;
+        Person person;
+        for (int i = 0; i < this.getAllChambres().size(); i++) {
+            chambre = this.getAllChambres().get(i);
+            person = this.getAllPerson().get(i);
+            associations.put(chambre,person);
+        }
+    }
 
+    public String displayAssociations(){
+        String r = "";
+
+        for (Map.Entry<Chambre, Person> entry : associations.entrySet()) {
+            r += entry.getKey().getName() + " " + entry.getKey().getId() + " : " + entry.getKey().getAverage() + " -> " + entry.getValue().getName() + " : " + entry.getValue().getPoints() + "\n";
+            if (entry.getValue().getPoints() < 0f){
+                System.out.println(entry.getValue());
+            }
+        }
+
+        return r;
     }
 
     /* Getters */
@@ -141,5 +164,8 @@ public class Systeme {
         system.initChambres("./Ressources/liste_chambres.csv");
         system.initPersons("./Ressources/liste_etudiants.csv");
         system.rankingPersons();
+        system.rankingChambres();
+        system.associationChambresPersons();
+        System.out.println(system.displayAssociations());
     }
 }
