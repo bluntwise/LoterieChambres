@@ -1,4 +1,4 @@
-public class Etudiant extends Person{
+public class Etudiant extends Personne{
 
     private String id;
     private String INE;

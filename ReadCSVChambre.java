@@ -22,8 +22,8 @@ public class ReadCSVChambre {
         this.id = line_splited[0];
         this.name = line_splited[1];
         this.residence = line_splited[2];
-        this.address = line_splited[3]; // had to convert to int
-        this.city = line_splited[4];
+        this.address = line_splited[3].replace("\"",""); // had to convert to int
+        this.city = line_splited[4].replace("\"","");
         this.city_code = Integer.parseInt(line_splited[5]);
         this.surface = Float.parseFloat(line_splited[6]);
         this.creation_date = Integer.parseInt(line_splited[7]);

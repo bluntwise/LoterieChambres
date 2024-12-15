@@ -11,23 +11,31 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 
-public class Systeme {
+public class GroupResidence {
 
-    
-    private TreeMap<Chambre,Boolean> allChambres;
+    public static Personne personne;
+    private LinkedHashMap<Chambre,Boolean> allChambres;
     private ArrayList<Residence> allResidences;
-    private ArrayList<Person> allPersons;
-    private Map<Person,Chambre> associations;
+    private ArrayList<Personne> allPersonnes;
+    private Map<Personne,Chambre> associations;
     
 
-    public Systeme(){
-        Comparator<Chambre> comparator = Comparator.comparing(Chambre::getAverage);
-        this.allChambres = new TreeMap<>(comparator);
+    public GroupResidence(){
+        
+        this.allChambres = new LinkedHashMap<>();
         this.allResidences = new ArrayList<>();
-        this.allPersons = new ArrayList<>();
+        this.allPersonnes = new ArrayList<>();
         this.associations = new LinkedHashMap<>();
     }
 
+    public void initGeneral(){
+        initChambres("Ressources/liste_chambres.csv");
+        initPersonnes("Ressources/liste_etudiants.csv");
+        rankingChambres();
+        rankingPersonnes();
+        associationChambresPersonnes();
+
+    }
 
     public void initChambres(String path){
         File csvFile = new File(path); // to read the CSV file
@@ -35,13 +43,14 @@ public class Systeme {
             String line;
             ReadCSVChambre obj_line;
             reader.readLine(); // Dropping first line
+            int i = 0;
             while((line = reader.readLine()) != null) { // reader.readLine() -> to get the line and 
  
                 obj_line = new ReadCSVChambre(line.split(";")); // spliting here but it was a choice
                 
                 Adress adress =  new Adress(obj_line.getCity(),obj_line.getCity_code(), obj_line.getAddress());
-
                 Residence residence = null;
+                
                 if (!(findResidenceByAdress(adress)==null)){
                     residence = findResidenceByAdress(adress);
                 }else{
@@ -52,8 +61,9 @@ public class Systeme {
                 Note scores = new Note(obj_line.getScores());
 
                 Chambre chambre = new Chambre(obj_line.getId(), obj_line.getName(),residence , obj_line.getSurface(), obj_line.getCreation_date(), obj_line.getLatest_renovation_date(), obj_line.getNb_locations(), scores);
-                
                 residence.addChambre(chambre);
+                
+                i++;
             }
         } catch (IOException e) {
             System.err.println(e);
@@ -61,6 +71,8 @@ public class Systeme {
         }
     }
     
+
+
     public Residence findResidenceByAdress(Adress adress){
         Residence r = null;
         for (Residence residence : allResidences) {
@@ -72,7 +84,7 @@ public class Systeme {
         return r;
     }
 
-    public void initPersons(String path){
+    public void initPersonnes(String path){
 
         File csvFile = new File(path); // to read the CSV file
         try(BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
@@ -84,89 +96,97 @@ public class Systeme {
                 // System.out.println(line);
                 obj_line = new ReadCSVEtudiant(line.split(";")); // spliting here but it was a choice
 
-                Person person;
+                Personne Personne;
 
                 Note scores = new Note(obj_line.getNotes());
                 if (obj_line.getContrat() != "null"){
                     Contrat contrat = new Contrat(obj_line.getContrat(), obj_line.getWorking_hours());
                     
                     if (obj_line.getINE() == "null"){
-                        person = new Person(obj_line.getName(), obj_line.getSurname(), obj_line.getGender(), obj_line.getAge(), contrat);
+                        Personne = new Personne(obj_line.getName(), obj_line.getSurname(), obj_line.getGender(), obj_line.getAge(), contrat);
 
                     }else{
-                        person = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores,contrat);
+                        Personne = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores,contrat);
                         
                     }
                 }else{
-                    person = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores);
+                    Personne = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores);
                 }
-                // System.out.println(person.getAverage() + " | " + test);
-                allPersons.add(person);
+                personne = Personne;
+                // System.out.println(Personne.getAverage() + " | " + test);
+                allPersonnes.add(Personne);
 
             }
         } catch (IOException e) {
             System.err.println(e);
-            System.err.println("An issue occured for Person extract");
+            System.err.println("An issue occured for Personne extract");
         }
     }
 
     
     public void rankingChambres(){
-        
+    
         for (Residence residence: getAllResidences()) {
             allChambres.putAll(residence.getChambres());
         }
-
-
         allChambres = allChambres.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByKey(Comparator.comparing(Chambre::getAverage).reversed()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,  // Clé
-                        Map.Entry::getValue,  // Valeur
-                        (e1, e2) -> e1,  // En cas de doublon, garder la première entrée
-                        LinkedHashMap::new  // Utilisation de LinkedHashMap pour garder l'ordre trié
-                ));
+            .stream()
+            .sorted(Map.Entry.comparingByKey(Comparator.comparing(Chambre::getAverage).reversed()))
+            .collect(Collectors.toMap(
+                    Map.Entry::getKey,  
+                    Map.Entry::getValue,  
+                    (e1, e2) -> e1,  
+                    LinkedHashMap::new  
+            ));
+        
     }
 
-    public void rankingPersons(){
-        getAllPerson().sort(Comparator.comparing(Person::getPoints).reversed());
-        for (Person person : getAllPerson()) {
-            System.out.println(person);
-        }
+    public void rankingPersonnes(){
+        getAllPersonne().sort(Comparator.comparing(Personne::getPoints).reversed());
     }
 
-    public void associationChambresPersons(){
+    public void associationChambresPersonnes(){
         Chambre chambre = null;
-        Person person;
+        Personne Personne;
         
         Iterator<Chambre> chambIterator = this.getAllChambres().keySet().iterator();
         int index = 0;
 
-        for (index = 0; index < this.getAllPerson().size(); index++){
+        for (index = 0; index < this.getAllPersonne().size(); index++){
             if (chambIterator == null){
                 chambre = null;
             }else{
                 try{
                     chambre = chambIterator.next();
+                    
                 }catch(Exception exception){
                     chambre = null;
                 }
             }
 
-            person = this.getAllPerson().get(index);
+            Personne = this.getAllPersonne().get(index);
+            allChambres.put(chambre, true);
+            associations.put(Personne, chambre);
 
-            associations.put(person, chambre);
-
+            if (index < this.getAllChambres().size() && chambre != null){
+                addAssociationToResidence(Personne, chambre);
+            }
+            
         }
     }
 
-    public String displayAssociations(){
+    public void addAssociationToResidence(Personne Personne, Chambre chambre){
+        Residence residence = getResidenceByChambre(chambre);
+        residence.addPersonne(Personne);
+    }
+    
+
+    public String displayAssociationsAll(){
         String r = "";
 
-        for (Map.Entry<Person, Chambre> entry : associations.entrySet()) {
+        for (Map.Entry<Personne, Chambre> entry : associations.entrySet()) {
             Chambre c = entry.getValue();
-            Person p = entry.getKey();
+            Personne p = entry.getKey();
             r += p.getName() + " " + p.getSurname() + " : " + p.getPoints() + " " + p.getContrat() + "->";
             if (c != null){
                 r += c.getName() + " " + c.getId() + " : " + c.getAverage() + "\n";  
@@ -178,18 +198,34 @@ public class Systeme {
         return r;
     }
 
-    public ArrayList<Person> personneWithOutChambre(){
-        ArrayList<Person> result = new ArrayList<>(); 
-        for (Person person : getAllPerson()) {
-            if (!getAllAssociations().containsKey(person)){
-                result.add(person);
-            }
-        }
-        return result;
+    public void deletePersonne(Personne personne){
+
+        Chambre chambre = getAllAssociations().get(personne);
+        Residence residence = getResidenceByChambre(chambre);
+
+        residence.deletePersonne(personne,chambre);
+
+        getAllAssociations().remove(personne);
+        getAllChambres().put(chambre, false);
+        getAllPersonne().remove(personne);
+
+
     }
 
 
     /* Getters */
+
+    public Residence getResidenceByChambre(Chambre chambre){
+
+        Residence r = null;
+        for (Residence residence : getAllResidences()) {
+            if (residence.getAllChambres().containsKey(chambre)){
+                r = residence;
+                break;
+            }
+        }
+        return r;
+    }
 
     public Map<Chambre,Boolean> getAllChambres(){
         return allChambres;
@@ -199,30 +235,28 @@ public class Systeme {
         return allResidences;
     }
 
-    public ArrayList<Person> getAllPerson(){
-        return allPersons;
+    public ArrayList<Personne> getAllPersonne(){
+        return allPersonnes;
     }
 
-    public Map<Person, Chambre> getAllAssociations(){
+    public Map<Personne, Chambre> getAllAssociations(){
         return associations;
     }
 
-    public static void main(String[] args) {
-        Systeme system = new Systeme();
-        system.initChambres("./Ressources/liste_chambres.csv");
-        system.initPersons("./Ressources/liste_etudiants.csv");
-        system.rankingPersons();
-        system.rankingChambres();
-        system.associationChambresPersons();
-        // system.displayAssociations();
-        System.out.println(system.displayAssociations());
+    public String toString(){
+        String r = "";
+        for (Residence residence : getAllResidences()) {
+            r += residence.toString();
+        }return r;
+    }
 
-        // for (Person person : system.personneWithOutChambre()) {
-        //     System.out.println(person);
-        // }
-        // System.out.println(system.personneWithOutChambre().size());
-        // System.out.println(system.getAllPerson().size());
-        
+    public static void main(String[] args) {
+        GroupResidence system = new GroupResidence();
+        system.initGeneral();
+        System.out.println(system.displayAssociationsAll());
+        System.out.println(system);
+
+
 
     }
 }

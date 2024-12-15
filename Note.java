@@ -1,6 +1,5 @@
 import java.util.Arrays;
 import java.util.stream.IntStream;
-import java.lang.*;
 
 public class Note {
     private int[] notes;
@@ -23,7 +22,7 @@ public class Note {
         if (getNotes().equals(null)){
             return 0f;
         }else{
-            return IntStream.of(notes).sum()/getNotes().length;
+            return (float)IntStream.of(notes).average().orElse(0.0);
         }
     
     }
