@@ -39,6 +39,9 @@ public class Person {
     }
 
     public Contrat getContrat(){
+        if (this.contrat == null){
+            return new Contrat();
+        }
         return this.contrat;
     }
 

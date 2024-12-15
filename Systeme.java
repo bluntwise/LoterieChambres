@@ -9,13 +9,15 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.print.DocFlavor.CHAR_ARRAY;
+
 public class Systeme {
 
     
     private ArrayList<Chambre> allChambres;
     private ArrayList<Residence> allResidences;
     private ArrayList<Person> allPersons;
-    private Map<Chambre, Person> associations;
+    private Map<Person,Chambre> associations;
     
 
     public Systeme(){
@@ -110,42 +112,58 @@ public class Systeme {
     
     public void rankingChambres(){
         
-        getAllChambres().sort(Comparator.comparing(Chambre::getAverage));
+        getAllChambres().sort(Comparator.comparing(Chambre::getAverage).reversed());
         // for (Chambre chambre : getAllChambres()) {
         //     System.out.println(chambre);
         // }
     }
 
     public void rankingPersons(){
-        getAllPerson().sort(Comparator.comparing(Person::getPoints));
-        // for (Person person : getAllPerson()) {
-        //     System.out.println(person);
-        // }
+        getAllPerson().sort(Comparator.comparing(Person::getPoints).reversed());
+        for (Person person : getAllPerson()) {
+            System.out.println(person);
+        }
     }
 
     public void associationChambresPersons(){
         Chambre chambre;
         Person person;
-        for (int i = 0; i < this.getAllChambres().size(); i++) {
-            chambre = this.getAllChambres().get(i);
-            person = this.getAllPerson().get(i);
-            associations.put(chambre,person);
+        for (int i = 0; i < this.getAllPerson().size(); i++) {
+            if (i >= this.getAllChambres().size()){
+                chambre = null;
+            }else{
+                chambre = this.getAllChambres().get(i);
+            }
+            person = this.getAllPerson().get(i);                
+            associations.put(person,chambre);
         }
     }
 
     public String displayAssociations(){
         String r = "";
 
-        for (Map.Entry<Chambre, Person> entry : associations.entrySet()) {
-            Chambre c = entry.getKey();
-            Person p = entry.getValue();
-            r += c.getName() + " " + c.getId() + " : " + c.getAverage() + " -> " + p.getName() + " : " + p.getPoints() + " " + p.getContrat() + "\n" + p.toString();
-            if (p instanceof Etudiant){
+        for (Map.Entry<Person, Chambre> entry : associations.entrySet()) {
+            Chambre c = entry.getValue();
+            Person p = entry.getKey();
+            r += p.getName() + " " + p.getSurname() + " : " + p.getPoints() + " " + p.getContrat() + "->";
+            if (c != null){
+                r += c.getName() + " " + c.getId() + " : " + c.getAverage() + "\n";  
+            }else{
+                r += "Pas de chambre \n";
             }
-            
         }
 
         return r;
+    }
+
+    public ArrayList<Person> personneWithOutChambre(){
+        ArrayList<Person> result = new ArrayList<>(); 
+        for (Person person : getAllPerson()) {
+            if (!getAllAssociations().containsKey(person)){
+                result.add(person);
+            }
+        }
+        return result;
     }
 
     /* Getters */
@@ -162,6 +180,10 @@ public class Systeme {
         return allPersons;
     }
 
+    public Map<Person, Chambre> getAllAssociations(){
+        return associations;
+    }
+
     public static void main(String[] args) {
         Systeme system = new Systeme();
         system.initChambres("./Ressources/liste_chambres.csv");
@@ -171,8 +193,13 @@ public class Systeme {
         system.associationChambresPersons();
         // system.displayAssociations();
         System.out.println(system.displayAssociations());
-        // for (Chambre chambre : system.getAllChambres()) {
-        //     System.out.println(chambre.getAverage());
+
+        // for (Person person : system.personneWithOutChambre()) {
+        //     System.out.println(person);
         // }
+        // System.out.println(system.personneWithOutChambre().size());
+        // System.out.println(system.getAllPerson().size());
+        
+
     }
 }

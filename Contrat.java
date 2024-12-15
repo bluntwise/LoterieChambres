@@ -9,8 +9,12 @@ public class Contrat {
         this.contrat = contrat;
         this.workinghours = workinghours;
     }
-
+    public Contrat(){
+        this.contrat = "Pas de contrat";
+        this.workinghours = new String[0];
+    }
     public String getContrat(){
+        
         return this.contrat;
     }
 
