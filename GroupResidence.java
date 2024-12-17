@@ -4,11 +4,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 
 public class GroupResidence {
@@ -168,9 +165,56 @@ public class GroupResidence {
         Residence residence = getResidenceByChambre(chambre);
         residence.addPersonneAndChambre(personne, chambre);
     }
+
+
     
 
+    
+    public void deletePersonne(Personne personne){
+
+        Chambre chambre = getAllAssociations().get(personne);
+        Residence residence = getResidenceByChambre(chambre);
+
+        residence.deletePersonne(personne);
+        
+        getAllAssociations().remove(personne);
+        getAllPersonne().remove(personne);
+        
+    }
+    
+    
+    
+    public void deleteChambre(Chambre chambre){
+        Personne personne = null;
+        for (Map.Entry<Personne, Chambre> entry : associations.entrySet()) {
+            if (entry.getValue().equals(chambre)) {
+                personne = entry.getKey();  // Retourne la personne associée
+            }
+        }
+        
+        Residence residence = getResidenceByChambre(chambre);
+        residence.deleteChambre(chambre);
+        getAllAssociations().remove(personne);
+        getAllChambres().remove(chambre);
+    }
+    
+    
+    public String availabilityChambres(){
+        String r = "";
+        for (Residence residence : getAllResidences()) {
+            r += residence.toString();
+        }
+        return r;
+    }
+    
     public String displayAssociationsAll(){
+        String r = "";
+        for (Residence residence : getAllResidences()) {
+            r += residence.toString();
+        }return r + "\n" + getPersonnesWithOut();
+    }
+    public String toString(){
+
         String r = "";
 
         for (Map.Entry<Personne, Chambre> entry : associations.entrySet()) {
@@ -185,48 +229,11 @@ public class GroupResidence {
         }
 
         return r;
+        
     }
-
-    public void deletePersonne(Personne personne){
-
-        Chambre chambre = getAllAssociations().get(personne);
-        Residence residence = getResidenceByChambre(chambre);
-
-        residence.deletePersonne(personne);
-
-        getAllAssociations().remove(personne);
-        getAllPersonne().remove(personne);
-
-    }
-
-
-
-    public void deleteChambre(Chambre chambre){
-        Personne personne = null;
-        for (Map.Entry<Personne, Chambre> entry : associations.entrySet()) {
-            if (entry.getValue().equals(chambre)) {
-                personne = entry.getKey();  // Retourne la personne associée
-            }
-        }
-
-        Residence residence = getResidenceByChambre(chambre);
-        residence.deleteChambre(chambre);
-        getAllAssociations().remove(personne);
-        getAllChambres().remove(chambre);
-    }
-
-
-    public String availabilityChambres(){
-        String r = "";
-        for (Residence residence : getAllResidences()) {
-            r += residence.toString();
-        }
-        return r;
-    }
-
     public String getPersonnesWithOut(){
         String r = "Personnes sans logement : \n";
-
+        
         for (Map.Entry<Personne, Chambre> entry : getAllAssociations().entrySet()) {
             if (entry.getValue() == null){
                 r += entry.getKey().getName() + " " + entry.getKey().getSurname()  + " " + entry.getKey().getPoints() + "\n";
@@ -235,11 +242,11 @@ public class GroupResidence {
         
         return r;
     }
-
+    
     /* Getters */
-
+    
     public Residence getResidenceByChambre(Chambre chambre){
-
+        
         Residence r = null;
         for (Residence residence : getAllResidences()) {
             if (residence.getAssociations().containsKey(chambre)){
@@ -249,29 +256,23 @@ public class GroupResidence {
         }
         return r;
     }
-
+    
     public ArrayList<Chambre> getAllChambres(){
         return allChambres;
     }
-
+    
     public ArrayList<Residence> getAllResidences(){
         return allResidences;
     }
-
+    
     public ArrayList<Personne> getAllPersonne(){
         return allPersonnes;
     }
-
+    
     public Map<Personne, Chambre> getAllAssociations(){
         return associations;
     }
 
-    public String toString(){
-        String r = "";
-        for (Residence residence : getAllResidences()) {
-            r += residence.toString();
-        }return r + "\n" + getPersonnesWithOut();
-    }
    
 
     public static void main(String[] args) {

@@ -1,9 +1,5 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Residence{
 
@@ -13,7 +9,6 @@ public class Residence{
         this.adress = adress;
         associations = new LinkedHashMap<>();
     }
-
 
     public void addPersonneAndChambre(Personne personne, Chambre chambre){
         associations.put(chambre, personne);
