@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.jar.Attributes.Name;
 
 
 public class GroupResidence {
 
     public static Personne personne;
+    private Scanner scanner;
     private ArrayList<Chambre> allChambres;
     private ArrayList<Residence> allResidences;
     private ArrayList<Personne> allPersonnes;
@@ -23,6 +26,7 @@ public class GroupResidence {
         this.allResidences = new ArrayList<>();
         this.allPersonnes = new ArrayList<>();
         this.associations = new LinkedHashMap<>();
+        this.scanner = new Scanner(System.in);
     }
 
     public void init(){
@@ -31,6 +35,35 @@ public class GroupResidence {
         rankingChambres();
         rankingPersonnes();
         associationChambresPersonnes();
+
+        boolean c = true;
+        int action = 0;
+        System.out.println("Choisissez une action à faire : \n(1) Afficher la répartition actuelle des chambres \n(2) Ajouter une personne \n(3) Ajouter une chambre \n");
+        while (c) {
+            if (scanner.hasNextInt()) {
+                action = scanner.nextInt();
+                scanner.nextLine();  
+        
+                if (action > 0 && action < 4) {
+                    c = false;
+                } else {
+                    System.out.println("Veuillez entrer un nombre entre 1 et 3.");
+                }
+            } else {
+                System.out.println("Veuillez entrer un nombre valide.");
+                scanner.nextLine();  
+            }
+        }
+        
+                
+        if (action == 1){
+            System.out.println(this);
+        }else if (action == 2){
+            this.addPersonneTerminal();
+        }else if (action == 3){
+            this.addChambreTerminal();
+        }
+
     }
 
     public void actualize(){
@@ -39,10 +72,7 @@ public class GroupResidence {
         associationChambresPersonnes();
     }
 
-    public void addPersonneTerminal(){
-        
-    }
-
+    
     public void initChambres(String path){
         File csvFile = new File(path); // to read the CSV file
         try(BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
@@ -62,7 +92,7 @@ public class GroupResidence {
                     
                     residence = new Residence(adress);
                     allResidences.add(residence);
-                }
+                } 
 
                 Note scores = new Note(obj_line.getScores());
 
@@ -86,9 +116,7 @@ public class GroupResidence {
             if (residence.getAdress().equals(adress)){
                 r = residence;
             }
-        }
-
-        return r;
+        }return r;
     }
 
     public void initPersonnes(String path){
@@ -102,9 +130,9 @@ public class GroupResidence {
             while((line = reader.readLine()) != null) { // reader.readLine() -> to get the line and 
                 // System.out.println(line);
                 obj_line = new ReadCSVEtudiant(line.split(";")); // spliting here but it was a choice
-
+                
                 Personne Personne;
-
+                
                 Note scores = new Note(obj_line.getNotes());
                 if (obj_line.getContrat() != "null"){
                     Contrat contrat = new Contrat(obj_line.getContrat(), obj_line.getWorking_hours());
@@ -139,9 +167,9 @@ public class GroupResidence {
     public void rankingPersonnes(){
         getAllPersonne().sort(Comparator.comparing(Personne::getPoints).reversed());
     }
-
     
-
+    
+    
     public void associationChambresPersonnes(){
         Chambre chambre = null;
         Personne personne;
@@ -149,9 +177,9 @@ public class GroupResidence {
         
 
         for (int index = 0; index < this.getAllPersonne().size(); index++){
-
+            
             personne = getAllPersonne().get(index);
-
+            
             if (index >= this.getAllChambres().size()){
                 chambre = null;
             }else{
@@ -163,13 +191,13 @@ public class GroupResidence {
                 Residence residence = getResidenceByChambre(chambre);
                 residence.addPersonneAndChambre(personne, chambre);
             }
-
-
-           
+            
+            
+            
             
         }
     }
-
+    
     public void addAssociationToResidence(Personne personne, Chambre chambre){
         Residence residence = getResidenceByChambre(chambre);
         residence.addPersonneAndChambre(personne, chambre);
@@ -177,13 +205,13 @@ public class GroupResidence {
 
 
     
-
+    
     
     public void deletePersonne(Personne personne){
 
         Chambre chambre = getAllAssociations().get(personne);
         Residence residence = getResidenceByChambre(chambre);
-
+        
         residence.deletePersonne(personne);
         
         getAllAssociations().remove(personne);
@@ -225,7 +253,7 @@ public class GroupResidence {
     public String toString(){
 
         String r = "";
-
+        
         for (Map.Entry<Personne, Chambre> entry : associations.entrySet()) {
             Chambre c = entry.getValue();
             Personne p = entry.getKey();
@@ -277,19 +305,47 @@ public class GroupResidence {
     public ArrayList<Personne> getAllPersonne(){
         return allPersonnes;
     }
-    
     public Map<Personne, Chambre> getAllAssociations(){
+    
         return associations;
     }
 
+    public void addPersonneTerminal(){
+        System.out.println("Ajout d'une personne :"); 
 
+        
+        System.out.print("Nom : ");
+        String name = scanner.nextLine();
+        System.out.print("Nom de famille: ");
+        String surname = scanner.nextLine();
+        System.out.print("Genre : ");
+        String gender = scanner.nextLine();
+        System.out.print("Age : ");
+        int age = scanner.nextInt();
+
+        System.out.println("La personne travaille t-elle ? O/N");
+        String rep = scanner.nextLine();
+        if (rep.equals("O")){
+            
+        }else if (rep.equals("N")){
+
+        }
+        
+    }
+
+    public void addChambreTerminal(){
+
+    }
     public static void main(String[] args) {
         GroupResidence system = new GroupResidence();
         system.init();
 
+
+        
         // System.out.println(system);
         // system.deletePersonne(personne);
-        System.out.println(system);
+        // System.out.println(system);
+        // system.addPersonneTerminal();
 
     }
 }

@@ -9,6 +9,12 @@ public class Contrat {
         this.contrat = contrat;
         this.workinghours = workinghours;
     }
+
+    public Contrat(String contrat, String workinghours){
+        this.contrat = contrat;
+        this.workinghours = workinghours.split(",");
+    }
+
     public Contrat(){
         this.contrat = "Pas de contrat";
         this.workinghours = new String[0];
