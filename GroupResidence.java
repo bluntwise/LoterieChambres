@@ -25,13 +25,22 @@ public class GroupResidence {
         this.associations = new LinkedHashMap<>();
     }
 
-    public void actualize(){
+    public void init(){
         initChambres("Ressources/liste_chambres.csv");
         initPersonnes("Ressources/liste_etudiants.csv");
-        System.out.println(allResidences.size());
         rankingChambres();
         rankingPersonnes();
         associationChambresPersonnes();
+    }
+
+    public void actualize(){
+        rankingChambres();
+        rankingPersonnes();
+        associationChambresPersonnes();
+    }
+
+    public void addPersonneTerminal(){
+        
     }
 
     public void initChambres(String path){
@@ -220,11 +229,11 @@ public class GroupResidence {
         for (Map.Entry<Personne, Chambre> entry : associations.entrySet()) {
             Chambre c = entry.getValue();
             Personne p = entry.getKey();
-            r += p.getName() + " " + p.getSurname() + " : " + p.getPoints() + " " + p.getContrat() + "->";
+            r += p.getName() + " ".repeat(10-p.getName().length()) + p.getSurname() + " ".repeat(10-p.getSurname().length()) + ": " + p.getPoints() + " ".repeat(10 - Float.toString(p.getPoints()).length()) + p.getContrat() + " ".repeat(30 - p.getContrat().toString().length()) + "->";
             if (c != null){
-                r += c.getName() + " " + c.getId() + " : " + c.getAverage() + "\n";  
+                r += " " + c.getName() + " " + c.getId() + " : " + c.getAverage() + "\n";  
             }else{
-                r += "Pas de chambre \n";
+                r += " " + "Pas de chambre \n";
             }
         }
 
@@ -273,19 +282,14 @@ public class GroupResidence {
         return associations;
     }
 
-   
 
     public static void main(String[] args) {
         GroupResidence system = new GroupResidence();
-        system.actualize();
+        system.init();
 
         // System.out.println(system);
         // system.deletePersonne(personne);
         System.out.println(system);
-
-
-
-
 
     }
 }

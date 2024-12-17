@@ -22,7 +22,9 @@ public class Note {
         if (getNotes().equals(null)){
             return 0f;
         }else{
-            return (float)IntStream.of(notes).average().orElse(0.0);
+            double moyenne = IntStream.of(notes).average().orElse(0.0);
+            double moyenneArrondie = Math.round(moyenne * 100.0) / 100.0;
+            return (float)moyenneArrondie;
         }
     
     }
