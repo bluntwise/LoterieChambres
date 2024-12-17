@@ -18,7 +18,7 @@ public class Contrat {
         return this.contrat;
     }
 
-    public String[] getWorkinghours(){
+    public String[] getWorkingHours(){
         return this.workinghours;
     }
 
@@ -30,8 +30,8 @@ public class Contrat {
             
             float total = 0;
             for (int i = 0; i < workinghours.length; i++) {
-                float start = Float.parseFloat(getWorkinghours()[i].split("-")[0].replace("\"",""));
-                float end = Float.parseFloat(getWorkinghours()[i].split("-")[1].replace("\"",""));
+                float start = Float.parseFloat(getWorkingHours()[i].split("-")[0].replace("\"",""));
+                float end = Float.parseFloat(getWorkingHours()[i].split("-")[1].replace("\"",""));
                 
                 total += Math.abs(end - start);
             }
