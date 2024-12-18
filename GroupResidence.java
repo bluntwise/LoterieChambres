@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.jar.Attributes.Name;
 
 
 public class GroupResidence {
@@ -55,12 +54,13 @@ public class GroupResidence {
                     
             if (action == 1){
                 System.out.println(this);
-                actualize();
+
             }else if (action == 2){
                 this.addPersonneTerminal();
             }else if (action == 3){
                 this.addChambreTerminal();
             }
+            actualize();
         }
     
     }
@@ -108,7 +108,7 @@ public class GroupResidence {
 
                 Note scores = new Note(obj_line.getScores());
 
-                Chambre chambre = new Chambre(obj_line.getId(), obj_line.getName(),residence , obj_line.getSurface(), obj_line.getCreation_date(), obj_line.getLatest_renovation_date(), obj_line.getNb_locations(), scores);
+                Chambre chambre = new Chambre(obj_line.getId(), obj_line.getName(), obj_line.getSurface(), obj_line.getCreation_date(), obj_line.getLatest_renovation_date(), obj_line.getNb_locations(), scores);
                 residence.addChambre(chambre);
                 allChambres.add(chambre);
                 
@@ -187,7 +187,7 @@ public class GroupResidence {
         Personne personne;
         
         
-
+        System.out.println("before " + associations.size());
         for (int index = 0; index < this.getAllPersonne().size(); index++){
             personne = getAllPersonne().get(index);
             
@@ -208,8 +208,11 @@ public class GroupResidence {
             
             
             
-        }System.out.println(associations.size());
-        System.out.println(getAllPersonne().size());
+        }
+        System.out.println("after " + associations.size());
+        System.out.println("get " + getAllAssociations().size());
+        System.out.println(associations.get("alan"));
+
     }
     
     public void addAssociationToResidence(Personne personne, Chambre chambre){
@@ -339,126 +342,237 @@ public class GroupResidence {
     public void addPersonneTerminal(){
         System.out.println("Ajout d'une personne :"); 
         
-        
-        // Nom
         System.out.print("Nom : ");
-String name = scanner.nextLine();
+        String name = scanner.nextLine();
 
-// Nom de famille
-System.out.print("Nom de famille: ");
-String surname = scanner.nextLine();
+        System.out.print("Nom de famille: ");
+        String surname = scanner.nextLine();
 
-// Genre
-System.out.print("Genre : ");
-String gender = scanner.nextLine();
+        // Genre
+        System.out.print("Genre : ");
+        String gender = scanner.nextLine();
 
-// Age
-int age = -1; // Initialisation avec une valeur invalide
-while (age <= 0) {
-    System.out.print("Age : ");
-    if (scanner.hasNextInt()) {
-        age = scanner.nextInt();
-        scanner.nextLine();  // Consomme le reste de la ligne
-        if (age <= 0) {
-            System.out.println("L'âge doit être un nombre positif. Essayez à nouveau.");
-        }
-    } else {
-        System.out.println("Veuillez entrer un nombre valide pour l'âge.");
-        scanner.nextLine();  // Consomme l'entrée invalide
-    }
-}
-
-System.out.print("La personne travaille t-elle ? O/N ");
-String rep = scanner.nextLine();
-Contrat contrat = null;
-
-// Vérification pour "travaille t-elle"
-while (!rep.equalsIgnoreCase("O") && !rep.equalsIgnoreCase("N")) {
-    System.out.println("Réponse invalide. Entrez O pour Oui ou N pour Non.");
-    System.out.print("La personne travaille t-elle ? O/N ");
-    rep = scanner.nextLine();
-}
-
-if (rep.equalsIgnoreCase("O")) {
-    System.out.print("Id du contrat : ");
-    String contratstr = scanner.nextLine();
-
-    System.out.print("Heures de travail : ");
-    String workinghours = scanner.nextLine();
-
-    contrat = new Contrat(contratstr, workinghours);
-}
-
-System.out.print("La personne est étudiante ? O/N ");
-rep = scanner.nextLine();
-
-// Vérification pour "étudiante ?"
-while (!rep.equalsIgnoreCase("O") && !rep.equalsIgnoreCase("N")) {
-    System.out.println("Réponse invalide. Entrez O pour Oui ou N pour Non.");
-    System.out.print("La personne est étudiante ? O/N ");
-    rep = scanner.nextLine();
-}
-
-Personne personne = null;
-
-    if (rep.equalsIgnoreCase("N")) {
-        if (contrat != null) {
-            personne = new Personne(name, surname, gender, age, contrat);
-        } else {
-            personne = new Personne(name, surname, gender, age);
-        }
-        System.out.println("Personne créée.");
-    } else if (rep.equalsIgnoreCase("O")) {
-    // Collecte des informations d'étudiant
-    System.out.print("Entrez l'identifiant de l'étudiant : ");
-    String id = scanner.nextLine();
-
-    System.out.print("Entrez le numéro INE de l'étudiant : ");
-    String INE = scanner.nextLine();
-
-    int promo = -1;
-    while (promo <= 0) {
-        System.out.print("Entrez l'année de promotion de l'étudiant : ");
-        if (scanner.hasNextInt()) {
-            promo = scanner.nextInt();
-            scanner.nextLine(); // Consomme la ligne
-            if (promo <= 0) {
-                System.out.println("L'année de promotion doit être un nombre positif.");
+        // Age
+        int age = -1; // Initialisation avec une valeur invalide
+        while (age <= 0) {
+            System.out.print("Age : ");
+            if (scanner.hasNextInt()) {
+                age = scanner.nextInt();
+                scanner.nextLine();  // Consomme le reste de la ligne
+                if (age <= 0) {
+                    System.out.println("L'âge doit être un nombre positif. Essayez à nouveau.");
+                }
+            } else {
+                System.out.println("Veuillez entrer un nombre valide pour l'âge.");
+                scanner.nextLine();  // Consomme l'entrée invalide
             }
-        } else {
-            System.out.println("Veuillez entrer un nombre valide pour l'année de promotion.");
-            scanner.nextLine();  // Consomme l'entrée invalide
         }
-    }
-    
-    System.out.print("Entrez vos notes : ");
-    String notesRaw = scanner.nextLine();
-    Note notes = new Note(parse_list_int(notesRaw));
-    
-    if (contrat == null) {
-        personne = new Etudiant(id, name, surname, age, gender, INE, promo, notes);
-    } else {
-        personne = new Etudiant(id, name, surname, age, gender, INE, promo, notes, contrat);
-    }
-    System.out.println("Etudiant créé.");
-}
 
-    // Ajouter la personne à la liste
-    if (personne != null) {
-        this.allPersonnes.add(personne);
-        System.out.println(personne.getName() + " " + personne.getSurname() + " a été ajouté.");
-        System.out.println(personne);
-    }
+        System.out.print("La personne travaille t-elle ? O/N ");
+        String rep = scanner.nextLine();
+        Contrat contrat = null;
 
-    
+        // Vérification pour "travaille t-elle"
+        while (!rep.equalsIgnoreCase("O") && !rep.equalsIgnoreCase("N")) {
+            System.out.println("Réponse invalide. Entrez O pour Oui ou N pour Non.");
+            System.out.print("La personne travaille t-elle ? O/N ");
+            rep = scanner.nextLine();
+        }
+
+        if (rep.equalsIgnoreCase("O")) {
+            System.out.print("Id du contrat : ");
+            String contratstr = scanner.nextLine();
+
+            System.out.print("Heures de travail : ");
+            String workinghours = scanner.nextLine();
+
+            contrat = new Contrat(contratstr, workinghours);
+        }
+
+        System.out.print("La personne est étudiante ? O/N ");
+        rep = scanner.nextLine();
+
+        while (!rep.equalsIgnoreCase("O") && !rep.equalsIgnoreCase("N")) {
+            System.out.println("Réponse invalide. Entrez O pour Oui ou N pour Non.");
+            System.out.print("La personne est étudiante ? O/N ");
+            rep = scanner.nextLine();
+        }
+
+        Personne personne = null;
+
+        if (rep.equalsIgnoreCase("N")) {
+            if (contrat != null) {
+                personne = new Personne(name, surname, gender, age, contrat);
+            } else {
+                personne = new Personne(name, surname, gender, age);
+            }
+            System.out.println("Personne créée.");
+        } else if (rep.equalsIgnoreCase("O")) {
+        // Collecte des informations d'étudiant
+        System.out.print("Entrez l'identifiant de l'étudiant : ");
+        String id = scanner.nextLine();
+
+        System.out.print("Entrez le numéro INE de l'étudiant : ");
+        String INE = scanner.nextLine();
+
+        int promo = -1;
+        while (promo <= 0) {
+            System.out.print("Entrez l'année de promotion de l'étudiant : ");
+            if (scanner.hasNextInt()) {
+                promo = scanner.nextInt();
+                scanner.nextLine(); // Consomme la ligne
+                if (promo <= 0) {
+                    System.out.println("L'année de promotion doit être un nombre positif.");
+                }
+            } else {
+                System.out.println("Veuillez entrer un nombre valide pour l'année de promotion.");
+                scanner.nextLine();  // Consomme l'entrée invalide
+            }
+        }
         
+        System.out.print("Entrez vos notes : ");
+        String notesRaw = scanner.nextLine();
+        Note notes = new Note(parse_list_int(notesRaw));
+        
+        if (contrat == null) {
+            personne = new Etudiant(id, name, surname, age, gender, INE, promo, notes);
+        } else {
+            personne = new Etudiant(id, name, surname, age, gender, INE, promo, notes, contrat);
+        }
+        System.out.println("Etudiant créé.");
+        }
 
+        // Ajouter la personne à la liste
+        if (personne != null) {
+            this.allPersonnes.add(personne);
+            System.out.println(personne.getName() + " " + personne.getSurname() + " a été ajouté.");
+            System.out.println(personne);
+        }
 
         
-    }
+        }
 
     public void addChambreTerminal(){
+        System.out.print("Entrez l'ID de la chambre: ");
+        String id = scanner.nextLine();
+        
+        System.out.print("Entrez le nom de la chambre: ");
+        String name = scanner.nextLine();
+        
+        System.out.print("Entrez le nom de la résidence: ");
+        String residenceName = scanner.nextLine();
+        
+        float surface = -1;
+        while (surface <= 0) {
+            System.out.print("Entrez la surface de la chambre (en m²): ");
+            if (scanner.hasNextFloat()) {
+                surface = scanner.nextFloat();
+                scanner.nextLine();
+                if (surface <= 0) {
+                    System.out.println("La surface doit être un nombre positif. Essayez encore.");
+                }
+            } else {
+                System.out.println("Veuillez entrer un nombre valide pour la surface.");
+                scanner.nextLine();
+            }
+        }
+        
+        int creationDate = -1;
+        while (creationDate <= 0) {
+            System.out.print("Entrez la date de création de la chambre (année): ");
+            if (scanner.hasNextInt()) {
+                creationDate = scanner.nextInt();
+                scanner.nextLine();
+                if (creationDate <= 0) {
+                    System.out.println("La date de création doit être un nombre positif.");
+                }
+            } else {
+                System.out.println("Veuillez entrer une année valide.");
+                scanner.nextLine();
+            }
+        }
+        
+        int renovationDate = -1;
+        while (renovationDate < creationDate) {
+            System.out.print("Entrez la date de dernière rénovation (année): ");
+            if (scanner.hasNextInt()) {
+                renovationDate = scanner.nextInt();
+                scanner.nextLine();
+                if (renovationDate < creationDate) {
+                    System.out.println("La date de rénovation doit être égale ou après la date de création.");
+                }
+            } else {
+                System.out.println("Veuillez entrer une année valide pour la date de rénovation.");
+                scanner.nextLine();
+            }
+        }
+        
+        int nbLocations = -1;
+        while (nbLocations <= 0) {
+            System.out.print("Entrez le nombre de locations passées : ");
+            if (scanner.hasNextInt()) {
+                nbLocations = scanner.nextInt();
+                scanner.nextLine();
+                if (nbLocations <= 0) {
+                    System.out.println("Le nombre de locations doit être un nombre positif.");
+                }
+            } else {
+                System.out.println("Veuillez entrer un nombre valide pour le nombre de locations.");
+                scanner.nextLine();
+            }
+        }
 
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Entrez le nom de la ville: ");
+        String city = scanner.nextLine();
+
+        int cityCode = -1;
+        while (cityCode <= 0) {
+            System.out.print("Entrez le code postal de la ville: ");
+            if (scanner.hasNextInt()) {
+                cityCode = scanner.nextInt();
+                scanner.nextLine();
+                if (cityCode <= 0) {
+                    System.out.println("Le code postal doit être un nombre positif.");
+                }
+            } else {
+                System.out.println("Veuillez entrer un code postal valide.");
+                scanner.nextLine();
+            }
+        }
+
+        System.out.print("Entrez vos notes : ");
+        String notesRaw = scanner.nextLine();
+        Note notes = new Note(parse_list_int(notesRaw));
+
+        System.out.print("Entrez le nom de la rue: ");
+        String street = scanner.nextLine();
+
+        Adress adress = new Adress(city, cityCode, street);
+        
+        Residence residence = findResidenceByAdress(adress);
+
+
+        Chambre chambre = new Chambre(id, name, surface, creationDate, renovationDate, nbLocations, notes);
+        if (!(findResidenceByAdress(adress)==null)){
+            residence = findResidenceByAdress(adress);
+        }else{
+            
+            residence = new Residence(adress);
+            allResidences.add(residence);
+        }residence.addChambre(chambre);
+        allChambres.add(chambre);
+        
+        System.out.println("Adresse créée avec succès: " + adress);
+
+
+        
+        // Residence residence = new Residence(residenceName);
+        
+        // Chambre chambre = new Chambre(id, name, residence, surface, creationDate, renovationDate, nbLocations);
+        
+        // System.out.println("Chambre créée avec succès: " + chambre);
     }
     public static void main(String[] args) {
         GroupResidence system = new GroupResidence();
