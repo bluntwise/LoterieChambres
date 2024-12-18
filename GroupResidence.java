@@ -325,11 +325,22 @@ public class GroupResidence {
 
         System.out.println("La personne travaille t-elle ? O/N");
         String rep = scanner.nextLine();
+        Contrat contrat;
         if (rep.equals("O")){
-            
-        }else if (rep.equals("N")){
+            System.out.print("Id du contrat : ");
+            String contratstr = scanner.nextLine();
+            System.out.print("Heures de travail : ");
+            String workinghours = scanner.nextLine();
 
+            contrat = new Contrat(contratstr, workinghours);
+
+        }else if (rep.equals("N")){
+            contrat = null;
         }
+
+        
+
+
         
     }
 
