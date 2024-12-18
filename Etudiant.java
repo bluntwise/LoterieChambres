@@ -12,7 +12,7 @@ public class Etudiant extends Personne{
         this.promo = promo;
         this.notes = notes;
     }
-
+    
     public Etudiant(String id, String name, String surname, int age, String gender, String INE, int promo, Note notes, Contrat contrat){
         super(name, surname, gender, age, contrat);
         this.id = id;
