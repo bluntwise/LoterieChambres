@@ -27,6 +27,7 @@ public class GroupResidence {
         this.associations = new LinkedHashMap<>();
         this.scanner = new Scanner(System.in);
     }
+    
     public void loop(){
         boolean conditionG = true;
         while (conditionG){
