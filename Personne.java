@@ -47,7 +47,7 @@ public class Personne {
 
     public String toString(){
         String s = " ";
-        return name + s + surname + s + gender + s + age + s + contrat;
+        return name + s + surname + s + gender + s + age + s + getContrat();
     }
 
     public float getAverage(){

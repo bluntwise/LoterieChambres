@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 
+
 public class GroupResidence {
 
     public static Personne personne;
@@ -231,6 +232,22 @@ public class GroupResidence {
         getAllAssociations().remove(personne);
         getAllPersonne().remove(personne);
         
+    }
+
+    public void addPersonne(Personne personne){
+        getAllPersonne().add(personne);
+    }
+    public void addChambre(Chambre chambre, Adress adress){
+        Residence residence = findResidenceByAdress(adress);
+
+        if (!(findResidenceByAdress(adress)==null)){
+            residence = findResidenceByAdress(adress);
+        }else{
+
+            residence = new Residence(adress);
+            allResidences.add(residence);
+        }residence.addChambre(chambre);
+        getAllChambres().add(chambre);
     }
     
     

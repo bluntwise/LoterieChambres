@@ -46,7 +46,6 @@ public class Residence{
             }
         }
         return r ;
-        // return adress.toString() + " : chambres -> " + super.getAllChambres().size() + " | personnes : " + super.getAllPerson().size() + "\n";
     }
 
 
