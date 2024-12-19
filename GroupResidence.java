@@ -180,9 +180,7 @@ public class GroupResidence {
     public void rankingPersonnes(){
         getAllPersonne().sort(Comparator.comparing(Personne::getPoints).reversed());
     }
-    
-    
-    
+
     public void associationChambresPersonnes(){
         Chambre chambre = null;
         Personne personne;
