@@ -1,5 +1,5 @@
 public class Etudiant extends Personne{
-ada
+
     private String id;
     private String INE;
     private int promo;

@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class Contrat {
     private String contrat;
     private String[] workinghours;
-asas
+
     public Contrat(String contrat, String[] workinghours){
         this.contrat = contrat;
         this.workinghours = workinghours;

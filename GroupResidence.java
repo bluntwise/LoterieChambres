@@ -195,8 +195,6 @@ public class GroupResidence {
             }else{
                 chambre = getAllChambres().get(index);
             }
-            
-            
             associations.put(personne, chambre);
 
             if (index < getAllChambres().size()){
@@ -293,7 +291,7 @@ public class GroupResidence {
                 r += entry.getKey().getName() + " " + entry.getKey().getSurname()  + " " + entry.getKey().getPoints() + "\n";
             }
         }
-        
+
         return r;
     }
     
