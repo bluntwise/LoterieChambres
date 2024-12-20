@@ -2,12 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Scanner;
-
+import java.util.*;
 
 
 public class GroupResidence {
@@ -55,7 +50,6 @@ public class GroupResidence {
 
             if (action == 1){
                 System.out.println(this);
-
             }else if (action == 2){
                 this.addPersonneTerminal();
             }else if (action == 3){
@@ -85,6 +79,9 @@ public class GroupResidence {
         rankingChambres();
         rankingPersonnes();
         associationChambresPersonnes();
+        for (int i = 0; i < getAllPersonne().size(); i++) {
+            System.out.println(allPersonnes.get(i));
+        }
     }
 
     
@@ -186,8 +183,7 @@ public class GroupResidence {
     public void associationChambresPersonnes(){
         Chambre chambre = null;
         Personne personne;
-        
-        
+        associations = new LinkedHashMap<>(); // on repart de zero pour rajouter dans l'ordre
         for (int index = 0; index < this.getAllPersonne().size(); index++){
             personne = getAllPersonne().get(index);
             
@@ -201,19 +197,9 @@ public class GroupResidence {
             if (index < getAllChambres().size()){
                 Residence residence = getResidenceByChambre(chambre);
                 residence.addPersonneAndChambre(personne, chambre);
+
             }
-            
-            
-            
-
         }
-
-
-    }
-    
-    public void addAssociationToResidence(Personne personne, Chambre chambre){
-        Residence residence = getResidenceByChambre(chambre);
-        residence.addPersonneAndChambre(personne, chambre);
     }
 
 
@@ -391,10 +377,18 @@ public class GroupResidence {
                 System.out.print("Id du contrat : ");
                 String contratstr = scanner.nextLine();
 
-                System.out.print("Heures de travail : ");
-                String workinghours = scanner.nextLine();
+                while (true) {
+                    System.out.print("Heures de travail \"18-19,19-0\" : ");
+                    String workinghours = scanner.nextLine();
+                    try {
+                        contrat = new Contrat(contratstr, workinghours);
+                        contrat.getTotalHours();
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Erreur pour les heures de travail. Veuillez réessayer.");
+                    }
+                }
 
-                contrat = new Contrat(contratstr, workinghours);
             }
 
             System.out.print("La personne est étudiante ? O/N ");
@@ -436,10 +430,19 @@ public class GroupResidence {
                         scanner.nextLine();
                     }
                 }
+                Note notes = null;
+                while (true){
+                    try{
+                        System.out.print("Entrez vos notes '[15,18]': ");
+                        String notesRaw = scanner.nextLine();
+                        notes = new Note(parse_list_int(notesRaw));
+                        notes.getAverage();
+                        break;
+                    }catch (Exception e){
+                        System.out.println("Erreur pour les notes. Veuillez réessayer, voici un exemple : '[15,18]'");
+                    }
+                }
 
-                System.out.print("Entrez vos notes : ");
-                String notesRaw = scanner.nextLine();
-                Note notes = new Note(parse_list_int(notesRaw));
 
                 if (contrat == null) {
                     personne = new Etudiant(id, name, surname, age, gender, INE, promo, notes);
@@ -544,10 +547,19 @@ public class GroupResidence {
                     scanner.nextLine();
                 }
             }
+            Note notes = null;
+            while (true){
+                System.out.print("Entrez vos notes '[4,3]' : ");
+                String notesRaw = scanner.nextLine();
+                try{
+                    notes = new Note(parse_list_int(notesRaw));
+                    notes.getAverage();
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Erreur pour les notes. Veuillez réessayer, voici un exemple '[4,3]' : ");
+                }
 
-            System.out.print("Entrez vos notes '[4,3]' : ");
-            String notesRaw = scanner.nextLine();
-            Note notes = new Note(parse_list_int(notesRaw));
+            }
 
             System.out.print("Entrez le nom de la rue: ");
             String street = scanner.nextLine();
