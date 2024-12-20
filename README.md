@@ -29,7 +29,7 @@ java GroupResidence
 ```bash
 java Main
 ```
-<img src="img.png" alt="Description" width="800" height="800">
+<img src="img.png" alt="Description" width="600" height="600">
 
 
 ## Les Tests
