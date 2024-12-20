@@ -1,4 +1,8 @@
 public class Chambre {
+    /*
+        classe qui modélise une chambre avec des caractéristiques
+        tels que le nom, sa surface, des notes ...
+     */
     private String id;
     private String name;
     private float surface;
@@ -18,12 +22,18 @@ public class Chambre {
     }
 
     public String toString(){
+        /*
+            méthode qui renvoie la chambre et ses caracatéristiques
+         */
         String s = " ";
         return getId() + s + getName() + s + surface + s + creation_date + s + latest_renovation_date + s + nb_locations + s + scores.toString() + s + getAverage();  
 
     }
 
     public float getAverage(){
+        /*
+            méthode qui renvoie la moyenne de notes de la chambre
+         */
         return scores.getAverage();
     }
     
@@ -57,8 +67,5 @@ public class Chambre {
         return this.scores;
     }
 
-    public static void main(String[] args) {
-        
-    }
 }
 

@@ -6,6 +6,12 @@ import java.util.*;
 
 
 public class GroupResidence {
+    /*
+        Représente un groupe de résidence,
+        stocke les résidences, les chambres, les personnes et les associations
+        """
+
+     */
 
     private Scanner scanner;
     private ArrayList<Chambre> allChambres;
@@ -15,21 +21,25 @@ public class GroupResidence {
     
 
     public GroupResidence(){
-        
         this.allChambres = new ArrayList<>();
         this.allResidences = new ArrayList<>();
         this.allPersonnes = new ArrayList<>();
         this.associations = new LinkedHashMap<>();
         this.scanner = new Scanner(System.in);
     }
-    
+
     public void loop(){
+        /*
+            méthode principale permettant de faire une boucle sur le 
+            programme        
+        */
         boolean conditionG = true;
         while (conditionG){
         
             boolean c = true;
             int action = 0;
             System.out.println("Choisissez une action à faire : \n(1) Afficher la répartition actuelle des chambres \n(2) Ajouter une personne \n(3) Ajouter une chambre \n(4) Arrêter le programme");
+            // choix des actions et relancer l'entrée si elle ne correspond pas
             while (c) {
                 if (scanner.hasNextInt()) {
                     action = scanner.nextInt();
@@ -46,7 +56,7 @@ public class GroupResidence {
                 }
             }
 
-
+            // identification de l'action
             if (action == 1){
                 System.out.println(this);
             }else if (action == 2){
@@ -56,6 +66,8 @@ public class GroupResidence {
             }else if (action == 4){
                 conditionG = false;
             }
+
+            // actualiser les associations, personnes et chambres
             actualize();
         }
     
@@ -64,27 +76,36 @@ public class GroupResidence {
 
     
     public void init(String pathChambres, String pathEtudiants){
+        /*
+                méthode de lancement au démarrage du programme
+                */
         initChambres(pathChambres);
         initPersonnes(pathEtudiants);
         rankingChambres();
         rankingPersonnes();
         associationChambresPersonnes();
 
+        // lancement de la boucle du programme
         loop();
 
     }
 
     public void actualize(){
+        /*
+                actualiser l'état du système
+                */
         rankingChambres();
         rankingPersonnes();
         associationChambresPersonnes();
-        for (int i = 0; i < getAllPersonne().size(); i++) {
-            System.out.println(allPersonnes.get(i));
-        }
+
     }
 
     
     public void initChambres(String path){
+        /*
+                méthode qui extrait les données et les stockent
+                */
+
         File csvFile = new File(path); // to read the CSV file
         try(BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
             String line;
@@ -96,7 +117,8 @@ public class GroupResidence {
                 
                 Adress adress =  new Adress(obj_line.getCity(),obj_line.getCity_code(), obj_line.getAddress());
                 Residence residence = null;
-                
+
+                // on trouve la résidence associée à l'adresse
                 if (!(findResidenceByAdress(adress)==null)){
                     residence = findResidenceByAdress(adress);
                 }else{
@@ -107,7 +129,9 @@ public class GroupResidence {
 
                 Note scores = new Note(obj_line.getScores());
 
+
                 Chambre chambre = new Chambre(obj_line.getId(), obj_line.getName(), obj_line.getSurface(), obj_line.getCreation_date(), obj_line.getLatest_renovation_date(), obj_line.getNb_locations(), scores);
+                // ajout de la chambre dans le système complet et dans la résidence associée
                 residence.addChambre(chambre);
                 allChambres.add(chambre);
                 
@@ -122,6 +146,10 @@ public class GroupResidence {
 
 
     public Residence findResidenceByAdress(Adress adress){
+        /*
+                méthode qui permet de trouver la résidence associée à l'adresse
+                si elle existe
+                */
         Residence r = null;
         for (Residence residence : allResidences) {
             if (residence.getAdress().equals(adress)){
@@ -131,7 +159,9 @@ public class GroupResidence {
     }
 
     public void initPersonnes(String path){
-
+        /*
+                méthode qui extrait et stocke les données dans le système
+                */
         File csvFile = new File(path); // to read the CSV file
         try(BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
             
@@ -142,25 +172,25 @@ public class GroupResidence {
                 // System.out.println(line);
                 obj_line = new ReadCSVEtudiant(line.split(";")); // spliting here but it was a choice
                 
-                Personne Personne;
+                Personne personne;
                 
                 Note scores = new Note(obj_line.getNotes());
                 if (obj_line.getContrat() != "null"){
                     Contrat contrat = new Contrat(obj_line.getContrat(), obj_line.getWorking_hours());
                     
                     if (obj_line.getINE() == "null"){
-                        Personne = new Personne(obj_line.getName(), obj_line.getSurname(), obj_line.getGender(), obj_line.getAge(), contrat);
+                        personne = new Personne(obj_line.getName(), obj_line.getSurname(), obj_line.getGender(), obj_line.getAge(), contrat);
 
                     }else{
-                        Personne = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores,contrat);
+                        personne = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores,contrat);
                         
                     }
                 }else{
-                    Personne = new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores);
+                    personne= new Etudiant(obj_line.getId(), obj_line.getName(), obj_line.getSurname(), obj_line.getAge(), obj_line.getGender(), obj_line.getINE(), obj_line.getPromo(), scores);
                 }
-                personne = Personne;
-                // System.out.println(Personne.getAverage() + " | " + test);
-                allPersonnes.add(Personne);
+
+                // ajout de la personne au système
+                allPersonnes.add(personne);
 
             }
         } catch (IOException e) {
@@ -172,14 +202,27 @@ public class GroupResidence {
 
     
     public void rankingChambres(){
+        /*
+                méthode qui classe les chambres 
+                */
+        // classement en fonction du résultat renvoyé par la méthode getAverage() des chambres
         getAllChambres().sort(Comparator.comparing(Chambre::getAverage).reversed());
     }
 
     public void rankingPersonnes(){
+        /*
+                méthode qui classe les personnes 
+                */
+        // classement en fonction du résultat renvoyé par la méthode getPoints() des personnes
         getAllPersonne().sort(Comparator.comparing(Personne::getPoints).reversed());
     }
 
+
     public void associationChambresPersonnes(){
+        /*
+                méthode qui associe les personnes aux chambres en fonction
+                des classements
+                */
         Chambre chambre = null;
         Personne personne;
         associations = new LinkedHashMap<>(); // on repart de zero pour rajouter dans l'ordre
@@ -193,6 +236,7 @@ public class GroupResidence {
             }
             associations.put(personne, chambre);
 
+            // si il y a encore des chambres à distribuer
             if (index < getAllChambres().size()){
                 Residence residence = getResidenceByChambre(chambre);
                 residence.addPersonneAndChambre(personne, chambre);
@@ -206,21 +250,29 @@ public class GroupResidence {
     
     
     public void deletePersonne(Personne personne){
-
+        /*
+                Suppression de personne dans le système
+                */
         Chambre chambre = getAllAssociations().get(personne);
         Residence residence = getResidenceByChambre(chambre);
         
         residence.deletePersonne(personne);
-        
+
+        // suppression de l'association chambre personne
         getAllAssociations().remove(personne);
         getAllPersonne().remove(personne);
-        
     }
 
     public void addPersonne(Personne personne){
+        /*
+                méthode qui ajoute des personnes dans le système
+                */
         getAllPersonne().add(personne);
     }
     public void addChambre(Chambre chambre, Adress adress){
+        /*
+                méthode qui ajoute une chambre avec une adresse
+                */
         Residence residence = findResidenceByAdress(adress);
 
         if (!(findResidenceByAdress(adress)==null)){
@@ -236,6 +288,9 @@ public class GroupResidence {
     
     
     public void deleteChambre(Chambre chambre){
+        /*
+            méthode qui supprime une chambre dans le système
+         */
         Personne personne = null;
         for (Map.Entry<Personne, Chambre> entry : associations.entrySet()) {
             if (entry.getValue().equals(chambre)) {
@@ -251,6 +306,9 @@ public class GroupResidence {
     
     
     public String availabilityChambres(){
+        /*
+            méthode qui renvoie les chambres disponibles
+         */
         String r = "";
         for (Residence residence : getAllResidences()) {
             r += residence.toString();
@@ -259,13 +317,18 @@ public class GroupResidence {
     }
     
     public String displayAssociationsAll(){
+        /*
+            méthode qui renvoie les associations des chambres et des personnes
+         */
         String r = "";
         for (Residence residence : getAllResidences()) {
             r += residence.toString();
         }return r + "\n" + getPersonnesWithOut();
     }
     public String toString(){
-
+        /*
+            méthode qui permet d'afficher l'état du système
+         */
         String r = "";
         for (Map.Entry<Personne, Chambre> entry : associations.entrySet()) {
             Chambre c = entry.getValue();
@@ -282,6 +345,9 @@ public class GroupResidence {
         
     }
     public String getPersonnesWithOut(){
+        /*
+            méthode qui renvoie les personnes sans chambres
+         */
         String r = "Personnes sans logement : \n";
         
         for (Map.Entry<Personne, Chambre> entry : getAllAssociations().entrySet()) {
@@ -295,8 +361,10 @@ public class GroupResidence {
     
     /* Getters */
     
-    public Residence getResidenceByChambre(Chambre chambre){
-        
+    public Residence getResidenceByChambre(Chambre chambre) {
+        /*
+            méthode qui renvoie la résidence en fonction de la chambre
+         */
         Residence r = null;
         for (Residence residence : getAllResidences()) {
             if (residence.getAssociations().containsKey(chambre)){
@@ -308,22 +376,37 @@ public class GroupResidence {
     }
     
     public ArrayList<Chambre> getAllChambres(){
+        /*
+            renvoie les chambres
+         */
         return allChambres;
     }
     
     public ArrayList<Residence> getAllResidences(){
+        /*
+            renvoie les résidences
+         */
         return allResidences;
     }
     
     public ArrayList<Personne> getAllPersonne(){
+        /*
+            renvoie les personnes
+         */
         return allPersonnes;
     }
     public Map<Personne, Chambre> getAllAssociations(){
+        /*
+            renvoie les associations
+         */
     
         return associations;
     }
 
     private int[] parse_list_int(String notes) {
+        /*
+            extrait d'une chaine de caractère les nombrers dans la liste
+         */
         // function to convert the string of notes to a list of int
         String[] n = notes.replace("[", "").replace("]", "").split(",");
         int[] res = new int[n.length];
@@ -335,6 +418,9 @@ public class GroupResidence {
     }
 
     public void addPersonneTerminal() {
+        /*
+            méthode qui ajoute une personne par terminal
+         */
         try {
             System.out.println("Ajout d'une personne :");
 
@@ -461,6 +547,9 @@ public class GroupResidence {
     }
 
     public void addChambreTerminal(){
+        /*
+            méthode qui ajoute une chambre par terminal
+         */
         try{
             System.out.print("Entrez l'ID de la chambre: ");
             String id = scanner.nextLine();
@@ -587,10 +676,16 @@ public class GroupResidence {
     }
 
     public void addResidence(Residence residence){
+        /*
+            méthode qui ajoute une résidence
+         */
         allResidences.add(residence);
     }
 
     public void deleteResidence(Residence residence){
+        /*
+            méthode qui supprime résidence
+         */
         allResidences.remove(residence);
     }
     public static void main(String[] args) {

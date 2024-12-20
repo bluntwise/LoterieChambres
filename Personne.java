@@ -1,5 +1,7 @@
 public class Personne {
-
+    /*
+        classe qui modélise une personne selon un nom, surname, un genre, ...
+     */
     private String name;
     private String surname;
     private String gender;
@@ -39,6 +41,9 @@ public class Personne {
     }
 
     public Contrat getContrat(){
+        /*
+            méthode qui renvoie le contrat
+         */
         if (this.contrat == null){
             return new Contrat();
         }
@@ -46,6 +51,9 @@ public class Personne {
     }
 
     public String toString(){
+        /*
+            méthode qui affiche la personne avec ses caractéristiques
+         */
         String s = " ";
         return name + s + surname + s + gender + s + age + s + getContrat();
     }
@@ -55,6 +63,9 @@ public class Personne {
     }
 
     public float getPoints(){
+        /*
+            méthode qui renvoie les points de la personne
+         */
         if (getContrat() != null){
             return getContrat().getTotalHours();
         }else{

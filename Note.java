@@ -2,6 +2,9 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class Note {
+    /*
+        classe qui modélise des notes
+     */
     private int[] notes;
 
     public Note(int[] notes){
@@ -9,12 +12,18 @@ public class Note {
     }
 
     public String toString(){
+        /*
+            méthode qui affiche les notes
+         */
         return Arrays.toString(this.notes);
     }
 
 
 
     public float getAverage(){
+        /*
+            méthode qui renvoie la moyenne des notes
+         */
         if (getNotes().equals(null)){
             return 0f;
         }else{
@@ -26,6 +35,9 @@ public class Note {
     }
 
     public int[] getNotes(){
+        /*
+            méthode qui renvoie le tableau de notes
+         */
         return this.notes;
     }
 

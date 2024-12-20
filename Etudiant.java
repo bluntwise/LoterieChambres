@@ -1,5 +1,7 @@
 public class Etudiant extends Personne{
-
+    /*
+        classe qui modélise un etudiant avec un id, ine, propo et ses notes
+     */
     private String id;
     private String INE;
     private int promo;
@@ -38,16 +40,26 @@ public class Etudiant extends Personne{
     }
 
     public String toString(){
+        /*
+            méthode qui renvoie l'état de l'étudiant
+         */
         String s = " ";
         return super.toString() + s + id + s + INE + s + promo + s + notes + s + getPoints(); 
     }
 
     @Override
     public float getAverage(){
+        /*
+            méthode qui renvoie la moyenne des notes de l'étudiant
+         */
         return notes.getAverage();
     }
 
     public float getPoints(){
+        /*
+            méthode qui renvoie les points de l'étudiant selon
+            un système de points
+         */
         float points = notes.getAverage() + (2027 - getPromo());
         if (getContrat() == null){
             return points;
