@@ -1,12 +1,19 @@
-class Main {
+class MainTest {
     public static void main(String[] args) {
         AdressTest.runTests();
+        System.out.println("---------------class Adress Test Valids---------------");
         NoteTest.runTests();
+        System.out.println("---------------class Note Test Valids---------------");
         ContratTest.runTests();
+        System.out.println("---------------class Contrat Test Valids---------------");
         ChambreTest.runTests();
+        System.out.println("---------------class Chambre Test Valids---------------");
         EtudiantTest.runTests();
+        System.out.println("---------------class Etudiant Test Valids---------------");
         PersonneTest.runTests();
+        System.out.println("---------------class Personne Test Valids---------------");
         ResidenceTest.runTests();
+        System.out.println("---------------class Residence Test Valids---------------");
     }
 }
 
@@ -91,12 +98,12 @@ class PersonneTest {
         assert personne1.getSurname().equals("Chasse");
         assert personne1.getGender().equals("M");
         assert personne1.getAge() == 22;
-        assert personne1.getContrat().getContrat().equals("Pas de contrat");
-        assert personne2.getContrat().getContrat().equals("1234");
-        assert personne1.toString().equals("Ilan Chasse M 22 Pas de contrat []");
-        assert personne1.getAverage() == 0.0f;
-        assert personne1.getPoints() == 0f;
-        assert personne2.getPoints() == contrat.getTotalHours();
+        assert personne1.getContrat().getContrat().equals("Pas de contrat") : "PAs de ";
+        assert personne2.getContrat().getContrat().equals("1234") : "L'id du contrat renvoyé n'est pas le bon.";
+        assert personne1.toString().equals("Ilan Chasse M 22 Pas de contrat []") : "La méthode toString ne renvoie pas le bon contenu.";
+        assert personne1.getAverage() == 0.0f : "La moyenne ne correspond pas à 0.";
+        assert personne1.getPoints() == 0f : "Les points ne correspondent pas. ";
+        assert personne2.getPoints() == contrat.getTotalHours() : "Les points ne correspondent au nombre d'heures.";
     }
 }
 
@@ -108,13 +115,63 @@ class ResidenceTest {
         Personne personne = new Personne("Ilan", "Chasse", "M", 22);
 
         residence.addPersonneAndChambre(personne, chambre);
-        assert residence.getAssociations().get(chambre).equals(personne);
+        assert residence.getAssociations().get(chambre).equals(personne) : "Les associations ne comportent pas " + personne.toString();
         residence.deletePersonne(personne);
-        assert !residence.getAssociations().containsKey(chambre);
+        assert !residence.getAssociations().containsKey(chambre) : "Les associations comportent encore " + personne.toString();
         residence.addChambre(chambre);
-        assert residence.getAssociations().containsKey(chambre);
+        assert residence.getAssociations().containsKey(chambre) : "Les associations ne comportent pas " + chambre.toString();
         residence.deleteChambre(chambre);
-        assert !residence.getAssociations().containsKey(chambre);
-        assert residence.getAdress().equals(adress);
+        assert !residence.getAssociations().containsKey(chambre) : "Les associations comportent encore " + chambre.toString();
+        assert residence.getAdress().equals(adress) : "La residence ne renvoie la bonne adresse.";
+    }
+}
+
+class GroupResidenceTest {
+    public static void runTests() {
+        Adress adress1 = new Adress("Rennes", 35000, "Rue Exemple");
+        Residence residence1 = new Residence(adress1);
+        Chambre chambre = new Chambre("qsjmklgh4s", "A101", 25.5f, 2015, 2020, 5, new Note(new int[]{4, 3}));
+        Personne personne = new Personne("Ilan", "Chasse", "M", 22);
+
+        residence1.addPersonneAndChambre(personne, chambre);
+
+        Adress adress2 = new Adress("Lannion", 22300, "Rue Enssat");
+        Residence residence2 = new Residence(adress2);
+        Chambre chambre1 = new Chambre("qsjmklgh4s", "A101", 25.5f, 2015, 2020, 5, new Note(new int[]{4, 3}));
+        Personne personne1 = new Personne("Ilan", "Chasse", "M", 22);
+
+        residence2.addPersonneAndChambre(personne1, chambre1);
+
+        GroupResidence groupResidence = new GroupResidence();
+        groupResidence.addResidence(residence1);
+        groupResidence.addResidence(residence2);
+
+        assert groupResidence.getAllResidences().size() == 2 :
+                "Le groupe devrait contenir 2 résidences après ajout";
+
+        assert groupResidence.getAllResidences().contains(residence1) :
+                "La résidence de Rennes devrait être présente";
+
+        assert groupResidence.getAllResidences().contains(residence2) :
+                "La résidence de Lannion devrait être présente";
+
+        groupResidence.deleteResidence(residence1);
+        assert groupResidence.getAllResidences().size() == 1 :
+                "Le groupe devrait contenir 1 résidence après suppression";
+
+        assert !groupResidence.getAllResidences().contains(residence1) :
+                "La résidence de Rennes ne devrait plus être présente";
+
+        Residence foundResidence = groupResidence.findResidenceByAdress(adress2);
+        assert foundResidence != null && foundResidence.equals(residence2) :
+                "La résidence de Lannion devrait être trouvée";
+
+        assert groupResidence.findResidenceByAdress(adress1) == null :
+                "La recherche d'une résidence supprimée devrait retourner null";
+
+        groupResidence.addResidence(residence2);
+        assert groupResidence.getAllResidences().size() == 1 :
+                "Le groupe ne devrait pas contenir de doublons";
+
     }
 }

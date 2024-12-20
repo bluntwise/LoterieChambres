@@ -586,6 +586,14 @@ public class GroupResidence {
 
 
     }
+
+    public void addResidence(Residence residence){
+        allResidences.add(residence);
+    }
+
+    public void deleteResidence(Residence residence){
+        allResidences.remove(residence);
+    }
     public static void main(String[] args) {
         GroupResidence system = new GroupResidence();
         system.init("Ressources/liste_chambres.csv", "Ressources/liste_etudiants.csv");
