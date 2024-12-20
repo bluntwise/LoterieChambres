@@ -37,4 +37,10 @@ Pour les tests, j'ai modélisé une classe MainTest. Pour chaque classe de mon p
 créé une classe de test associée. Ces classes de test se situent dans le fichier MainTest.java et 
 instancient des objets de la classe qui est leur associée. Par exemple la classe de test
 ResidenceTest va créé un objet Residence et vérifier avec l'instruction assert si le 
-résultat de la méthode testée est en acccord avec ce qu'on attend.  
+résultat de la méthode testée est en acccord avec ce qu'on attend. Si j'avais eu plus de 
+temps j'aurais changé mon implentation pour le stockage de mes associations en passant
+par une structure qui trie directement en fonction d'une méthode les associations. 
+
+
+
+
