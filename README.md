@@ -33,4 +33,8 @@ java Main
 
 ## Les Tests
 
-Pour les tests, j'ai modélisé une classe MainTest. Pour chaque classe autre 
+Pour les tests, j'ai modélisé une classe MainTest. Pour chaque classe de mon projet j'ai 
+créé une classe de test associée. Ces classes de test se situent dans le fichier MainTest.java et 
+instancient des objets de la classe qui est leur associée. Par exemple la classe de test
+ResidenceTest va créé un objet Residence et vérifier avec l'instruction assert si le 
+résultat de la méthode testée est en acccord avec ce qu'on attend.  
