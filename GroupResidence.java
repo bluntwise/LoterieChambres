@@ -7,7 +7,6 @@ import java.util.*;
 
 public class GroupResidence {
 
-    public static Personne personne;
     private Scanner scanner;
     private ArrayList<Chambre> allChambres;
     private ArrayList<Residence> allResidences;
@@ -596,6 +595,10 @@ public class GroupResidence {
     }
     public static void main(String[] args) {
         GroupResidence system = new GroupResidence();
-        system.init("Ressources/liste_chambres.csv", "Ressources/liste_etudiants.csv");
+        if (args.length == 2){
+            system.init(args[0], args[1]);
+        }else{
+            system.init("Ressources/liste_chambres.csv", "Ressources/liste_etudiants.csv");
+        }
     }
 }

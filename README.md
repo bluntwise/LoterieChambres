@@ -19,9 +19,14 @@ cd LoterieChambres/
 ```
 ### Compilage
 ```bash
-java *.java
+javac *.java
 ```
-### Lancer Projet
+### Lancer Projet 
+## Avec des arguments
+```bash
+java GroupResidence "Ressources/liste_chambres.csv" "Ressources/liste_etudiants.csv"
+```
+## Sans arguments
 ```bash
 java GroupResidence
 ```
@@ -29,8 +34,13 @@ java GroupResidence
 ```bash
 java Main
 ```
-<img src="img.png" alt="Description" width="600" height="600">
+<div style="text-align: center;border-width: 2px;">
+  <img src="umlClasse.png" alt="" width="800" height="700">
+</div>
 
+<div style="text-align: center;border-width: 2px;">
+  <img src="umlEtatsTransitions.png" alt="" width="700" height="700">
+</div>
 
 ## Les Tests
 

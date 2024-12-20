@@ -12,10 +12,6 @@ public class Note {
         return Arrays.toString(this.notes);
     }
 
-    public static void main(String[] args) {
-
-    }
-
 
 
     public float getAverage(){

@@ -43,15 +43,5 @@ public class Contrat {
                 
             
             return total;
-
-
-        
-    }
-
-    public static void main(String[] args) {
-        String[] workingHours = "8-10,17-21".split(",");
-
-        Contrat c = new Contrat("8453146484", workingHours);
-        System.out.println(c);
     }
 }

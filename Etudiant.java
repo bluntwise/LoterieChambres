@@ -54,8 +54,4 @@ public class Etudiant extends Personne{
         }
         return points + getContrat().getTotalHours();
     }
-
-    public static void main(String[] args) {
-        // Etudiant e = new Etudiant("35qg65cq48", null, null, null, null, null, null, 0)
-    }
 }
